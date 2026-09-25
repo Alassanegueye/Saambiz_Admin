@@ -1,0 +1,110 @@
+import { Helmet } from 'react-helmet';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
+import Badge from '../../components/common/Badge';
+import SearchInput from '../../components/common/SearchInput';
+import Pagination from '../../components/common/Pagination';
+import { formatDateTime, formatMontant, formatStatut } from '../../utils/formatters';
+import usePaiements, { varianteStatut } from './usePaiements';
+
+/** Transactions de la marketplace, et celles qui ont échoué. */
+export default function PaiementsPage() {
+  const p = usePaiements();
+  const liste = p.courant;
+  const surEchecs = p.onglet === 'echecs';
+
+  return (
+    <div>
+      <Helmet><title>Paiements — SaamBiz Admin</title></Helmet>
+
+      <div className="page-header">
+        <div className="page-header-left">
+          <h1>Paiements</h1>
+          <p>{p.nbTous} paiement(s) au total — {p.nbEchecs} échec(s)</p>
+        </div>
+      </div>
+
+      <div className="tabs-bar">
+        <button
+          className={`tab-btn${!surEchecs ? ' active' : ''}`}
+          onClick={() => p.changerOnglet('tous')}
+        >
+          Tous les paiements
+        </button>
+        <button
+          className={`tab-btn${surEchecs ? ' active' : ''}`}
+          onClick={() => p.changerOnglet('echecs')}
+        >
+          Paiements échoués
+        </button>
+      </div>
+
+      <div className="card">
+        <div className="card-header">
+          <span className="card-title">
+            {surEchecs ? 'Paiements échoués' : 'Liste des paiements'}
+          </span>
+          <SearchInput
+            value={liste.search}
+            onChange={liste.rechercher}
+            placeholder="Rechercher (référence, type, statut)…"
+          />
+        </div>
+
+        {liste.loading ? <LoadingSpinner /> : (
+          <>
+            <div className="table-wrap">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Montant</th>
+                    <th>Type</th>
+                    <th>Statut</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {liste.pageCourante.length === 0 ? (
+                    <tr>
+                      <td colSpan={5}>
+                        <div className="empty-state">
+                          <p>
+                            {liste.rechercheDifferee
+                              ? `Aucun résultat pour « ${liste.rechercheDifferee} »`
+                              : `Aucun paiement ${surEchecs ? 'échoué ' : ''}enregistré pour l’instant`}
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                  ) : liste.pageCourante.map((paiement) => (
+                    <tr key={paiement.id}>
+                      <td className="td-muted">#{paiement.id}</td>
+                      <td className="td-bold">{formatMontant(paiement.montant)}</td>
+                      <td className="td-muted">{paiement.type || '—'}</td>
+                      <td>
+                        <Badge variant={varianteStatut(paiement.statut)}>
+                          {formatStatut(paiement.statut)}
+                        </Badge>
+                      </td>
+                      <td className="td-muted">
+                        {formatDateTime(paiement.date || paiement.createdAt)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="bloc-pagination">
+              <Pagination
+                currentPage={liste.page}
+                totalPages={liste.totalPages}
+                onPageChange={liste.setPage}
+              />
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
