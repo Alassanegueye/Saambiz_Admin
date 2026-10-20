@@ -67,22 +67,16 @@ export default function AdminsPage() {
         <Modal
           isOpen={a.permissionsOuvertes}
           onClose={a.fermerPermissions}
-          title={`Permissions — ${a.adminSelectionne?.prenom} ${a.adminSelectionne?.nom}`}
+          large
+          title={`Accès de ${a.adminSelectionne?.prenom || ''} ${a.adminSelectionne?.nom || ''}`.trim()}
+          description="L'administrateur ne verra que ces pages dans le dashboard."
           footer={(
             <>
-              <button
-                className="btn btn-secondary"
-                onClick={a.fermerPermissions}
-                disabled={a.enregistrementPermissions}
-              >
+              <button className="btn btn-secondary" onClick={a.fermerPermissions} disabled={a.enregistrementPermissions}>
                 Annuler
               </button>
-              <button
-                className="btn btn-primary"
-                onClick={a.enregistrerPermissions}
-                disabled={a.enregistrementPermissions}
-              >
-                {a.enregistrementPermissions ? 'Sauvegarde…' : 'Enregistrer'}
+              <button className="btn btn-primary" onClick={a.enregistrerPermissions} disabled={a.enregistrementPermissions}>
+                {a.enregistrementPermissions ? 'Enregistrement…' : 'Enregistrer'}
               </button>
             </>
           )}
