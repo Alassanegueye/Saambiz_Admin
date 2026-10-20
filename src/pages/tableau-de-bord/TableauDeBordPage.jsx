@@ -39,7 +39,7 @@ export default function TableauDeBordPage() {
             couleur="blue" icone={ICONE_PERSONNE} />
           <CarteStat label="Clients inactifs" to="/acheteurs?statut=inactifs" valeur={t.stats?.clientsInactifs}
             couleur="gold" icone={ICONE_PERSONNE} />
-          <CarteStat label="Produits actifs" to="/produits" valeur={t.stats?.produitsActifs}
+          <CarteStat label="Produits actifs" to="/produits?statut=disponibles" valeur={t.stats?.produitsActifs}
             couleur="red" icone={ICONE_PANIER} />
         </div>
 

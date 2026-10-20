@@ -1226,3 +1226,20 @@ td.cat-col-nombre { font-variant-numeric: tabular-nums; }
 .stat-card-lien:hover .stat-card-lien-texte { opacity: 1; }
 .lien-voir-tout { font-size: 0.82rem; font-weight: 600; color: var(--color-primary); text-decoration: none; }
 .lien-voir-tout:hover { text-decoration: underline; }
+
+/* ── Produits et commandes (admin) ── */
+.td-petit { font-size: 0.75rem; }
+.prix-barre { text-decoration: line-through; font-weight: 400; }
+.entete-produit { display: flex; gap: 1rem; align-items: center; margin-bottom: 1.25rem; }
+.image-produit { width: 88px; height: 88px; border-radius: 12px; object-fit: cover; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.entete-produit-badges { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem; }
+.entete-commande { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.apercu-image { margin-top: 0.5rem; width: 96px; height: 96px; border-radius: 10px; object-fit: cover; border: 1px solid var(--color-border); }
+.case-a-cocher { display: flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; color: var(--color-text); cursor: pointer; align-self: center; }
+.case-a-cocher input { width: 16px; height: 16px; accent-color: var(--color-primary); }
+.ligne-article { display: grid; grid-template-columns: minmax(0, 1fr) 90px auto; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem; }
+.ligne-article-pied { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.25rem; }
+.lignes-commande { margin-top: 1.25rem; border: 1px solid var(--color-border); border-radius: var(--radius); }
+.totaux-commande { margin-top: 1rem; margin-left: auto; max-width: 280px; display: grid; gap: 0.35rem; font-size: 0.88rem; }
+.totaux-commande > div { display: flex; justify-content: space-between; color: var(--color-text-muted); }
+.totaux-commande .total { color: var(--color-text); font-weight: 700; border-top: 1px solid var(--color-border); padding-top: 0.4rem; }
