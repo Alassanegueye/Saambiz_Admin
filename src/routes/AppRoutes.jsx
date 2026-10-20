@@ -20,10 +20,8 @@ const CommandesPage     = lazy(() => import('../pages/commandes/CommandesPage'))
 const PaiementsPage     = lazy(() => import('../pages/paiements/PaiementsPage'));
 const AbonnementsPage   = lazy(() => import('../pages/abonnements/AbonnementsPage'));
 const ModerationPage    = lazy(() => import('../pages/moderation/ModerationPage'));
-const SignalementsPage  = lazy(() => import('../pages/signalements/SignalementsPage'));
 const ConfigPage        = lazy(() => import('../pages/config/ConfigPage'));
 const AdminsPage        = lazy(() => import('../pages/admins/AdminsPage'));
-const MenusPage         = lazy(() => import('../pages/menus/MenusPage'));
 const RetoursPage       = lazy(() => import('../pages/retours/RetoursPage'));
 const AuditLogsPage     = lazy(() => import('../pages/audit/AuditPage'));
 const ValidationVendeursPage = lazy(() => import('../pages/validation-vendeurs/ValidationVendeursPage'));
@@ -59,9 +57,7 @@ export default function AppRoutes() {
               <Route path={ROUTES.PAIEMENTS}    element={<PaiementsPage />} />
               <Route path={ROUTES.ABONNEMENTS}  element={<AbonnementsPage />} />
               <Route path={ROUTES.MODERATION}   element={<ModerationPage />} />
-              <Route path={ROUTES.SIGNALEMENTS} element={<SignalementsPage />} />
               <Route path={ROUTES.ADMINS}       element={<AdminsPage />} />
-              <Route path={ROUTES.MENUS}        element={<MenusPage />} />
               <Route path={ROUTES.CONFIG}       element={<ConfigPage />} />
               <Route path={ROUTES.RETOURS}      element={<RetoursPage />} />
               <Route path={ROUTES.AUDIT_LOGS}   element={<AuditLogsPage />} />

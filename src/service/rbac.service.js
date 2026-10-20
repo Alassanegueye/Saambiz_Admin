@@ -13,6 +13,3 @@ export const updateAdminPerms    = (id, perms)  => api.put(R.ADMIN_PERMISSIONS(i
 
 // ── Menus ─────────────────────────────────────────────────────────────────
 export const getMenus    = ()         => api.get(R.MENUS);
-export const creerMenu   = (data)     => api.post(R.MENUS, data);
-export const updateMenu  = (id, data) => api.put(R.MENU_BY_ID(id), data);
-export const supprimerMenu = (id)     => api.delete(R.MENU_BY_ID(id));

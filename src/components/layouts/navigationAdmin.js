@@ -28,7 +28,7 @@ export const GROUPES = [
   {
     label: 'Clients',
     icone: 'ACHETEURS',
-    codes: ['ACHETEURS', 'SIGNALEMENTS', 'MODERATION'],
+    codes: ['ACHETEURS', 'MODERATION'],
   },
   {
     label: 'Finance',
@@ -38,7 +38,7 @@ export const GROUPES = [
   {
     label: 'Administration',
     icone: 'ADMINS',
-    codes: ['ADMINS', 'ACTIVITE', 'MENUS', 'CONFIG'],
+    codes: ['ADMINS', 'ACTIVITE', 'CONFIG'],
   },
 ];
 
@@ -51,12 +51,10 @@ export const AIDES = {
   VALIDATION_VENDEURS: 'Pièces justificatives à examiner',
   ABONNEMENTS: 'Essais et renouvellements',
   ACHETEURS: 'Comptes clients',
-  SIGNALEMENTS: 'Signalés depuis l’application',
   MODERATION: 'Contenus en attente de validation',
   PAIEMENTS: 'Transactions et statuts',
   ADMINS: 'Accès au dashboard',
   ACTIVITE: 'Qui a fait quoi, et quand',
-  MENUS: 'Rubriques et droits',
   CONFIG: 'Réglages de la plateforme',
 };
 
@@ -93,3 +91,10 @@ export function estActif(item, pathname) {
   if (item.end || item.to === '/') return pathname === item.to;
   return pathname === item.to || pathname.startsWith(`${item.to}/`);
 }
+
+/**
+ * Rubriques retirées du dashboard (pages Menus et Signalements). Le serveur
+ * les désactive (migration 20261026) ; on les écarte aussi ici, au cas où
+ * une ancienne session ou une base pas encore migrée les renverrait.
+ */
+export const CODES_RETIRES = ['MENUS', 'SIGNALEMENTS'];

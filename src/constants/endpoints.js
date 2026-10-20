@@ -27,7 +27,6 @@ export const ENDPOINTS = {
     ADMIN_PERMISSIONS: (id) => `/admin/rbac/admins/${id}/permissions`,
     // Menus
     MENUS:             '/admin/rbac/menus',
-    MENU_BY_ID:        (id) => `/admin/rbac/menus/${id}`,
   },
 
   // ── Administration ────────────────────────────────────────────────────────
@@ -161,10 +160,6 @@ export const ENDPOINTS = {
     REORDER: '/admin/categories/ordre',              // PUT (admin) { ids: [...] }
   },
 
-  // ── Signalements (liste admin) ────────────────────────────────────────────
-  SIGNALEMENTS: {
-    LIST: '/admin/signalements',
-  },
 
   // ── Messages clients ──────────────────────────────────────────────────────
   MESSAGES: {

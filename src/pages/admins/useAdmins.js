@@ -5,6 +5,7 @@ import {
   getAdminPermissions, updateAdminPerms, getMenus,
 } from '../../service/rbac.service';
 import useListeFiltree from '../../hooks/useListeFiltree';
+import { CODES_RETIRES } from '../../components/layouts/navigationAdmin';
 
 /**
  * Contrôleur de la page Administrateurs.
@@ -51,7 +52,7 @@ export default function useAdmins() {
     (async () => {
       try {
         const res = await getMenus();
-        setMenus(res.data?.menus || []);
+        setMenus((res.data?.menus || []).filter((m) => m.isActive !== false && !CODES_RETIRES.includes(m.code)));
       } catch {
         toast.error('Erreur lors du chargement des menus');
       }
