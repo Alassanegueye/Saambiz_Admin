@@ -45,8 +45,7 @@ export default function ProduitsPage() {
       {surActifs ? (
         p.actifs.loading ? <LoadingSpinner /> : (
           <div className="card">
-            <div className="card-header">
-              <span className="card-title">Liste des produits</span>
+            <div className="card-header card-header-recherche">
               <SearchInput
                 value={p.actifs.search}
                 onChange={p.actifs.rechercher}

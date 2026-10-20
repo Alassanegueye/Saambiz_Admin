@@ -23,6 +23,17 @@ export const suspendreVendeur = (vendeurId) => api.put(E.SUSPENDRE_VENDEUR(vende
 export const supprimerUtilisateur = (userId) => api.delete(E.SUPPRIMER_UTILISATEUR(userId));
 export const activerUtilisateur   = (userId) => api.put(E.ACTIVER_UTILISATEUR(userId));
 
+// ── Comptes clients / vendeurs ────────────────────────────────────────────
+export const creerVendeur      = (data)     => api.post(E.CREER_VENDEUR, data);
+export const modifierVendeur   = (id, data) => api.put(E.VENDEUR(id), data);
+export const supprimerVendeur  = (id)       => api.delete(E.VENDEUR(id));
+export const activerVendeur    = (id)       => api.put(E.ACTIVER_VENDEUR(id));
+export const creerAcheteur     = (data)     => api.post(E.CREER_ACHETEUR, data);
+export const modifierAcheteur  = (id, data) => api.put(E.ACHETEUR(id), data);
+export const supprimerAcheteur = (id)       => api.delete(E.ACHETEUR(id));
+export const suspendreAcheteur = (id)       => api.put(E.SUSPENDRE_ACHETEUR(id));
+export const activerAcheteur   = (id)       => api.put(E.ACTIVER_ACHETEUR(id));
+
 // ── Configuration ─────────────────────────────────────────────────────────
 export const getPrixAbonnement    = ()      => api.get(E.PRIX_ABONNEMENT);
 export const updatePrixAbonnement = (prix)  => api.put(E.UPDATE_PRIX_ABONNEMENT, { prix });

@@ -1,7 +1,8 @@
 import { formatDate } from '../../../utils/formatters';
 import AvatarPersonne from '../../../components/common/AvatarPersonne';
+import { estActif } from '../useAcheteurs';
 
-/** Fiche d'un acheteur, dans la modale de détail. */
+/** Fiche d'un client, dans la modale de détail. */
 export default function DetailAcheteur({ acheteur }) {
   if (!acheteur) return null;
 
@@ -20,10 +21,7 @@ export default function DetailAcheteur({ acheteur }) {
           <label>Téléphone</label><span>{acheteur.telephone || '—'}</span>
         </div>
         <div className="detail-item">
-          <label>Ville</label><span>{acheteur.ville || '—'}</span>
-        </div>
-        <div className="detail-item">
-          <label>Statut</label><span>{acheteur.actif ? 'Actif' : 'Inactif'}</span>
+          <label>Statut</label><span>{estActif(acheteur) ? 'Actif' : 'Suspendu'}</span>
         </div>
         <div className="detail-item">
           <label>Inscription</label><span>{formatDate(acheteur.createdAt)}</span>

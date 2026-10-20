@@ -95,12 +95,15 @@ export const showConfirm = ({
   }).then((r) => r.isConfirmed);
 
 /** Compatibilité avec l'API de react-toastify utilisée dans les écrans. */
+// Le 2e argument peut être un texte par défaut (`toast.error(err, 'Échec')`)
+// ou des options (`{ autoClose }`).
+const shim = (fn) => (m, o) => (typeof o === 'string' ? fn(m, o) : fn(m, undefined, o));
 export const toast = {
-  success: (m, options) => showSuccess(m, undefined, options),
-  error: (m, options) => showError(m, undefined, options),
-  info: (m, options) => showInfo(m, undefined, options),
-  warning: (m, options) => showWarning(m, undefined, options),
-  warn: (m, options) => showWarning(m, undefined, options),
+  success: shim(showSuccess),
+  error: shim(showError),
+  info: shim(showInfo),
+  warning: shim(showWarning),
+  warn: shim(showWarning),
   dismiss: () => Swal.close(),
 };
 

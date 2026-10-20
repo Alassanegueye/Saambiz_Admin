@@ -29,8 +29,12 @@ export default function AuditPage() {
       </div>
 
       <div className="card">
-        <div className="card-header">
-          <span className="card-title">Journal des actions administrateur</span>
+        <div className="card-header card-header-recherche">
+          <SearchInput
+            value={a.search}
+            onChange={a.rechercher}
+            placeholder="Rechercher (admin, cible)…"
+          />
           <div className="groupe-filtres">
             <input
               className="form-input champ-filtre"
@@ -38,11 +42,6 @@ export default function AuditPage() {
               onChange={(e) => a.filtrerParAction(e.target.value)}
               placeholder="Filtrer par action…"
               aria-label="Filtrer par action"
-            />
-            <SearchInput
-              value={a.search}
-              onChange={a.rechercher}
-              placeholder="Rechercher (admin, cible)…"
             />
           </div>
         </div>

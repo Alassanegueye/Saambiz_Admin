@@ -33,8 +33,12 @@ export default function AbonnementsPage() {
       )}
 
       <div className="card">
-        <div className="card-header">
-          <span className="card-title">Liste des abonnements</span>
+        <div className="card-header card-header-recherche">
+          <SearchInput
+            value={a.search}
+            onChange={a.rechercher}
+            placeholder="Rechercher par vendeur…"
+          />
           <div className="groupe-filtres">
             <select
               className="form-select filter-select"
@@ -44,11 +48,6 @@ export default function AbonnementsPage() {
             >
               {STATUTS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
             </select>
-            <SearchInput
-              value={a.search}
-              onChange={a.rechercher}
-              placeholder="Rechercher par vendeur…"
-            />
           </div>
         </div>
 

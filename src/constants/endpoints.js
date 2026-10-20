@@ -60,6 +60,13 @@ export const ENDPOINTS = {
     SUPPRIMER_UTILISATEUR: (userId) => `/admin/supprimer-utilisateur/${userId}`,
     ACTIVER_UTILISATEUR:   (userId) => `/admin/vendeur/${userId}/activer`,
 
+    // Comptes clients / vendeurs : création, modification, suppression
+    CREER_VENDEUR:      '/admin/vendeurs',
+    VENDEUR:            (id) => `/admin/vendeur/${id}`,
+    CREER_ACHETEUR:     '/admin/acheteurs',
+    ACHETEUR:           (id) => `/admin/acheteur/${id}`,
+    ACTIVER_ACHETEUR:   (id) => `/admin/acheteur/${id}/activer`,
+
     // Modération produits
     PRODUITS_EN_ATTENTE: '/admin/produits-en-attente',
     APPROUVER_PRODUIT:   (id) => `/admin/produit/${id}/approuver`,

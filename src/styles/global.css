@@ -1174,3 +1174,55 @@ td.cat-col-nombre { font-variant-numeric: tabular-nums; }
   .tn-barre { gap: 0.5rem; padding: 0 0.75rem; }
   .tn-marque { margin-right: auto; }
 }
+
+/* ── En-tête de liste : recherche à gauche, filtres ensuite ── */
+.card-header-recherche {
+  justify-content: flex-start;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.card-header-recherche .search-wrap { flex: 1 1 260px; max-width: 380px; }
+.card-header-recherche .search-wrap + * { margin-left: auto; }
+@media (max-width: 640px) {
+  .card-header-recherche .search-wrap { max-width: none; }
+  .card-header-recherche .search-wrap + * { margin-left: 0; }
+}
+
+/* ── Filtres en pastilles (Tous / Actifs / Suspendus) ── */
+.filtres-statut { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.filtre-statut {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--color-border); border-radius: 999px;
+  background: var(--color-white); color: var(--color-text-muted);
+  font-family: var(--font); font-size: 0.82rem; font-weight: 500;
+  cursor: pointer; transition: var(--transition);
+}
+.filtre-statut:hover { border-color: var(--color-primary); color: var(--color-primary); }
+.filtre-statut.actif {
+  background: rgba(13, 27, 61, 0.08);
+  border-color: var(--color-primary);
+  color: var(--color-primary); font-weight: 600;
+}
+.filtre-statut-nombre {
+  min-width: 1.4rem; padding: 0 0.35rem; border-radius: 999px;
+  background: var(--color-bg); font-size: 0.72rem; line-height: 1.3rem; text-align: center;
+}
+.filtre-statut.actif .filtre-statut-nombre { background: var(--color-primary); color: var(--color-white); }
+
+/* ── Formulaires de compte ── */
+.form-grille-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1rem; }
+@media (max-width: 520px) { .form-grille-2 { grid-template-columns: 1fr; } }
+.form-hint { margin-top: 0.5rem; font-size: 0.8rem; color: var(--color-text-muted); }
+
+/* ── Compteurs cliquables du tableau de bord ── */
+.stat-card-lien { display: block; color: inherit; text-decoration: none; cursor: pointer; }
+.stat-card-lien:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+.stat-card-lien-texte {
+  display: inline-block; margin-top: 0.5rem;
+  font-size: 0.75rem; font-weight: 600; color: var(--color-primary);
+  opacity: 0.7; transition: opacity 0.2s;
+}
+.stat-card-lien:hover .stat-card-lien-texte { opacity: 1; }
+.lien-voir-tout { font-size: 0.82rem; font-weight: 600; color: var(--color-primary); text-decoration: none; }
+.lien-voir-tout:hover { text-decoration: underline; }

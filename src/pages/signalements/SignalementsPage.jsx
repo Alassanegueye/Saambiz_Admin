@@ -36,8 +36,7 @@ export default function SignalementsPage() {
       </div>
 
       <div className="card">
-        <div className="card-header">
-          <span className="card-title">Liste des signalements</span>
+        <div className="card-header card-header-recherche">
           <SearchInput value={s.search} onChange={s.rechercher} placeholder="Rechercher…" />
         </div>
 

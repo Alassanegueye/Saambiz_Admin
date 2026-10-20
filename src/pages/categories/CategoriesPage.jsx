@@ -39,8 +39,7 @@ export default function CategoriesPage() {
       </div>
 
       <div className="card">
-        <div className="card-header">
-          <span className="card-title">Ordre d'affichage dans l'application</span>
+        <div className="card-header card-header-recherche">
           <SearchInput value={c.search} onChange={c.rechercher} placeholder="Rechercher…" />
         </div>
         <p className="form-hint cat-aide">

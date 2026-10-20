@@ -26,8 +26,7 @@ export default function ModerationPage() {
       </div>
 
       <div className="card">
-        <div className="card-header">
-          <span className="card-title">Produits en attente</span>
+        <div className="card-header card-header-recherche">
           <SearchInput
             value={m.search}
             onChange={m.rechercher}

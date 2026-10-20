@@ -8,6 +8,9 @@ import useAdmins from './useAdmins';
 import TableAdmins from './components/TableAdmins';
 import FormulaireAdmin from './components/FormulaireAdmin';
 import GrillePermissions from './components/GrillePermissions';
+import FormulaireCompte from '../../components/forms/FormulaireCompte';
+import AvatarPersonne from '../../components/common/AvatarPersonne';
+import { formatDate } from '../../utils/formatters';
 
 /** Comptes administrateurs et leurs droits (RBAC). */
 export default function AdminsPage() {
@@ -25,19 +28,20 @@ export default function AdminsPage() {
             <p>{a.elements.length} administrateur(s) au total</p>
           </div>
           <button className="btn btn-primary" onClick={a.ouvrirCreation}>
-            + Nouvel administrateur
+            + Ajouter un administrateur
           </button>
         </div>
 
         <div className="card">
-          <div className="card-header">
-            <span className="card-title">Liste des administrateurs</span>
-            <SearchInput value={a.search} onChange={a.rechercher} placeholder="Rechercher…" />
+          <div className="card-header card-header-recherche">
+            <SearchInput value={a.search} onChange={a.rechercher} placeholder="Rechercher par nom ou email…" />
           </div>
 
           <TableAdmins
             admins={a.pageCourante}
             recherche={a.rechercheDifferee}
+            onVoir={a.voir}
+            onModifier={a.ouvrirModification}
             onPermissions={a.ouvrirPermissions}
             onSupprimer={a.setCibleSuppression}
           />
@@ -89,6 +93,53 @@ export default function AdminsPage() {
             onChange={a.changerPermissionEditee}
           />
         </Modal>
+
+        <Modal
+          isOpen={Boolean(a.selection)}
+          onClose={a.fermerDetail}
+          title="Détails de l'administrateur"
+          footer={(
+            <>
+              <button className="btn btn-secondary" onClick={a.fermerDetail}>Fermer</button>
+              <button
+                className="btn btn-primary"
+                onClick={() => { const s = a.selection; a.fermerDetail(); a.ouvrirPermissions(s); }}
+              >
+                Permissions
+              </button>
+            </>
+          )}
+        >
+          {a.selection && (
+            <div>
+              <div className="entete-personne">
+                <AvatarPersonne personne={a.selection} grand />
+                <div>
+                  <div className="entete-personne-nom">{a.selection.prenom} {a.selection.nom}</div>
+                  <div className="entete-personne-email">{a.selection.email}</div>
+                </div>
+              </div>
+              <div className="detail-grid">
+                <div className="detail-item">
+                  <label>Première connexion</label>
+                  <span>{a.selection.isFirstLogin ? 'Pas encore connecté' : 'Effectuée'}</span>
+                </div>
+                <div className="detail-item">
+                  <label>Inscrit le</label><span>{formatDate(a.selection.createdAt)}</span>
+                </div>
+              </div>
+            </div>
+          )}
+        </Modal>
+
+        <FormulaireCompte
+          key={a.edition.cle}
+          ouvert={a.edition.ouvert}
+          compte={a.edition.compte}
+          type="admin"
+          onFermer={a.fermerModification}
+          onEnregistrer={a.enregistrerModification}
+        />
 
         <ConfirmModal
           isOpen={Boolean(a.cibleSuppression)}

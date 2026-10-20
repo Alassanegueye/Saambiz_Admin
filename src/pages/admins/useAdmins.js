@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { toast } from '../../utils/alert';
 import {
-  getAdmins, creerAdmin, supprimerAdmin,
+  getAdmins, creerAdmin, supprimerAdmin, modifierAdmin,
   getAdminPermissions, updateAdminPerms, getMenus,
 } from '../../service/rbac.service';
 import useListeFiltree from '../../hooks/useListeFiltree';
@@ -153,6 +153,26 @@ export default function useAdmins() {
     }
   };
 
+  // ── Consultation et modification de l'identité ──
+  const [selection, setSelection] = useState(null);
+  const voir = (admin) => setSelection(admin);
+  const fermerDetail = () => setSelection(null);
+
+  const [edition, setEdition] = useState({ ouvert: false, compte: null, cle: 0 });
+  const ouvrirModification = (admin) => setEdition((e) => ({ ouvert: true, compte: admin, cle: e.cle + 1 }));
+  const fermerModification = () => setEdition((e) => ({ ...e, ouvert: false }));
+
+  const enregistrerModification = async ({ nom, prenom, email }) => {
+    try {
+      await modifierAdmin(edition.compte.id, { nom, prenom, email });
+      toast.success('Administrateur mis à jour');
+      fermerModification();
+      await liste.recharger();
+    } catch (err) {
+      toast.error(err, 'Erreur lors de la mise à jour');
+    }
+  };
+
   // ── Suppression ──
   const [cibleSuppression, setCibleSuppression] = useState(null);
 
@@ -177,5 +197,7 @@ export default function useAdmins() {
     permissionsEditees, changerPermissionEditee,
     enregistrementPermissions, enregistrerPermissions,
     cibleSuppression, setCibleSuppression, supprimer,
+    selection, voir, fermerDetail,
+    edition, ouvrirModification, fermerModification, enregistrerModification,
   };
 }

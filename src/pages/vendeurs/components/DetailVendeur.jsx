@@ -1,6 +1,6 @@
 import AvatarPersonne from '../../../components/common/AvatarPersonne';
 import { formatDate } from '../../../utils/formatters';
-import { libelleStatut } from '../useVendeurs';
+import { libelleStatut, estActif } from '../useVendeurs';
 
 /** Fiche d'un vendeur, dans la modale de détail. */
 export default function DetailVendeur({ vendeur }) {
@@ -21,13 +21,7 @@ export default function DetailVendeur({ vendeur }) {
           <label>Téléphone</label><span>{vendeur.telephone || '—'}</span>
         </div>
         <div className="detail-item">
-          <label>Ville</label><span>{vendeur.ville || '—'}</span>
-        </div>
-        <div className="detail-item">
-          <label>Statut</label><span>{libelleStatut(vendeur.actif, vendeur.suspendu)}</span>
-        </div>
-        <div className="detail-item">
-          <label>Abonnement</label><span>{vendeur.abonnementActif ? 'Actif' : 'Inactif'}</span>
+          <label>Statut</label><span>{libelleStatut(estActif(vendeur))}</span>
         </div>
         <div className="detail-item">
           <label>Vérification</label><span>{vendeur.verifie ? 'Vérifié' : 'Non vérifié'}</span>

@@ -1,11 +1,16 @@
+import { Link } from 'react-router-dom';
 import Badge from '../../../components/common/Badge';
+import { estActif } from '../../../hooks/useComptes';
 import { formatDate } from '../../../utils/formatters';
 
 /** Cinq derniers vendeurs inscrits, avec leur état d'activation. */
 export function VendeursRecents({ vendeurs }) {
   return (
     <div className="card">
-      <div className="card-header"><span className="card-title">Vendeurs récents</span></div>
+      <div className="card-header">
+        <span className="card-title">Vendeurs récents</span>
+        <Link to="/vendeurs" className="lien-voir-tout">Voir tout</Link>
+      </div>
       <div className="table-wrap">
         <table className="data-table">
           <thead><tr><th>Nom</th><th>Email</th><th>Statut</th></tr></thead>
@@ -17,8 +22,8 @@ export function VendeursRecents({ vendeurs }) {
                 <td className="td-bold">{v.prenom} {v.nom}</td>
                 <td className="td-muted">{v.email || '—'}</td>
                 <td>
-                  <Badge variant={v.actif ? 'success' : 'default'}>
-                    {v.actif ? 'Actif' : 'Inactif'}
+                  <Badge variant={estActif(v) ? 'success' : 'default'}>
+                    {estActif(v) ? 'Actif' : 'Inactif'}
                   </Badge>
                 </td>
               </tr>
@@ -34,7 +39,10 @@ export function VendeursRecents({ vendeurs }) {
 export function ClientsRecents({ clients }) {
   return (
     <div className="card">
-      <div className="card-header"><span className="card-title">Clients récents</span></div>
+      <div className="card-header">
+        <span className="card-title">Clients récents</span>
+        <Link to="/acheteurs" className="lien-voir-tout">Voir tout</Link>
+      </div>
       <div className="table-wrap">
         <table className="data-table">
           <thead><tr><th>Nom</th><th>Email</th><th>Inscription</th></tr></thead>

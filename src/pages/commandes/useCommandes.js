@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { getCommandes } from '../../service/commandes.service';
 import useListeServeur from '../../hooks/useListeServeur';
 
@@ -44,7 +45,9 @@ export const nomPersonne = (valeur) => {
 };
 
 export default function useCommandes() {
-  const [statutFiltre, setStatutFiltre] = useState('');
+  // `?statut=livree` : ouverture depuis un compteur du tableau de bord.
+  const [params] = useSearchParams();
+  const [statutFiltre, setStatutFiltre] = useState(() => params.get('statut') || '');
   const [selection, setSelection] = useState(null);
 
   const charger = useCallback(

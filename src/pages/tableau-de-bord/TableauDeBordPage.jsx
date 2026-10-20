@@ -31,15 +31,15 @@ export default function TableauDeBordPage() {
         </div>
 
         <div className="stats-grid">
-          <CarteStat label="Vendeurs actifs" valeur={t.stats?.vendeursActifs}
+          <CarteStat label="Vendeurs actifs" to="/vendeurs?statut=actifs" valeur={t.stats?.vendeursActifs}
             couleur="green" icone={ICONE_BOUTIQUE} />
-          <CarteStat label="Vendeurs inactifs" valeur={t.stats?.vendeursInactifs}
+          <CarteStat label="Vendeurs inactifs" to="/vendeurs?statut=inactifs" valeur={t.stats?.vendeursInactifs}
             couleur="gray" icone={ICONE_BOUTIQUE_VIDE} />
-          <CarteStat label="Clients actifs" valeur={t.stats?.clientsActifs}
+          <CarteStat label="Clients actifs" to="/acheteurs?statut=actifs" valeur={t.stats?.clientsActifs}
             couleur="blue" icone={ICONE_PERSONNE} />
-          <CarteStat label="Clients inactifs" valeur={t.stats?.clientsInactifs}
+          <CarteStat label="Clients inactifs" to="/acheteurs?statut=inactifs" valeur={t.stats?.clientsInactifs}
             couleur="gold" icone={ICONE_PERSONNE} />
-          <CarteStat label="Produits actifs" valeur={t.stats?.produitsActifs}
+          <CarteStat label="Produits actifs" to="/produits" valeur={t.stats?.produitsActifs}
             couleur="red" icone={ICONE_PANIER} />
         </div>
 
@@ -52,11 +52,11 @@ export default function TableauDeBordPage() {
             chargement est plus lent et ne doit pas bloquer la page. */}
         {!t.loadingAvance && t.statsEcommerce && (
           <div className="stats-grid">
-            <CarteStat label="Commandes totales" valeur={t.statsEcommerce.commandes_total}
+            <CarteStat label="Commandes totales" to="/commandes" valeur={t.statsEcommerce.commandes_total}
               couleur="blue" icone={ICONE_PANIER} />
-            <CarteStat label="Montant total" valeur={formatMontant(t.statsEcommerce.montant_total)}
+            <CarteStat label="Montant total" to="/paiements" valeur={formatMontant(t.statsEcommerce.montant_total)}
               couleur="green" icone={ICONE_MONNAIE} />
-            <CarteStat label="Commandes livrées" valeur={t.statsEcommerce.commandes_livrees}
+            <CarteStat label="Commandes livrées" to="/commandes?statut=livree" valeur={t.statsEcommerce.commandes_livrees}
               couleur="gold" icone={ICONE_VALIDE} />
           </div>
         )}

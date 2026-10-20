@@ -29,8 +29,12 @@ export default function CommandesPage() {
       </div>
 
       <div className="card">
-        <div className="card-header">
-          <span className="card-title">Liste des commandes</span>
+        <div className="card-header card-header-recherche">
+          <SearchInput
+            value={c.search}
+            onChange={c.rechercher}
+            placeholder="Rechercher par référence…"
+          />
           <div className="groupe-filtres">
             <select
               className="form-select filter-select"
@@ -40,11 +44,6 @@ export default function CommandesPage() {
             >
               {STATUTS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
             </select>
-            <SearchInput
-              value={c.search}
-              onChange={c.rechercher}
-              placeholder="Rechercher par référence…"
-            />
           </div>
         </div>
 

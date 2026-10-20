@@ -39,10 +39,7 @@ export default function PaiementsPage() {
       </div>
 
       <div className="card">
-        <div className="card-header">
-          <span className="card-title">
-            {surEchecs ? 'Paiements échoués' : 'Liste des paiements'}
-          </span>
+        <div className="card-header card-header-recherche">
           <SearchInput
             value={liste.search}
             onChange={liste.rechercher}

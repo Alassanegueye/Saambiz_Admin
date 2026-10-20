@@ -28,8 +28,7 @@ export default function MenusPage() {
         </div>
 
         <div className="card">
-          <div className="card-header">
-            <span className="card-title">Liste des menus</span>
+          <div className="card-header card-header-recherche">
             <SearchInput value={m.search} onChange={m.rechercher} placeholder="Rechercher…" />
           </div>
 

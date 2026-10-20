@@ -3,7 +3,9 @@ import AvatarPersonne from '../../../components/common/AvatarPersonne';
 import { formatDate } from '../../../utils/formatters';
 
 /** Liste des comptes administrateurs. */
-export default function TableAdmins({ admins, recherche, onPermissions, onSupprimer }) {
+export default function TableAdmins({
+  admins, recherche, onVoir, onModifier, onPermissions, onSupprimer,
+}) {
   return (
     <div className="table-wrap">
       <table className="data-table">
@@ -48,6 +50,8 @@ export default function TableAdmins({ admins, recherche, onPermissions, onSuppri
               <td className="td-muted">{formatDate(a.createdAt)}</td>
               <td>
                 <div className="table-actions">
+                  <button className="btn btn-ghost btn-sm" onClick={() => onVoir(a)}>Voir</button>
+                  <button className="btn btn-ghost btn-sm" onClick={() => onModifier(a)}>Modifier</button>
                   <button className="btn btn-ghost btn-sm" onClick={() => onPermissions(a)}>
                     Permissions
                   </button>

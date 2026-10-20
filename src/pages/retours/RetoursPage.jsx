@@ -26,8 +26,12 @@ export default function RetoursPage() {
       </div>
 
       <div className="card">
-        <div className="card-header">
-          <span className="card-title">Liste des demandes</span>
+        <div className="card-header card-header-recherche">
+          <SearchInput
+            value={r.search}
+            onChange={r.rechercher}
+            placeholder="Rechercher par raison ou commande…"
+          />
           <div className="groupe-filtres">
             <select
               className="form-select filter-select"
@@ -37,11 +41,6 @@ export default function RetoursPage() {
             >
               {STATUTS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
             </select>
-            <SearchInput
-              value={r.search}
-              onChange={r.rechercher}
-              placeholder="Rechercher par raison ou commande…"
-            />
           </div>
         </div>
 
