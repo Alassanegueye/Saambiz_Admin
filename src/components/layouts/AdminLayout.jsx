@@ -40,6 +40,7 @@ export default function AdminLayout() {
   // Les rubriques restent pilotées par le RBAC : un administrateur ne voit
   // que les menus sur lesquels il a le droit de lecture.
   const items = menus.map((menu) => ({
+    code: menu.code,
     to: menu.path,
     label: menu.name,
     icon: ICONES[menu.code] || ICONE_DEFAUT,
