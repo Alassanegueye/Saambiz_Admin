@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import useTitrePage from '../../hooks/useTitrePage';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import SearchInput from '../../components/common/SearchInput';
 import Pagination from '../../components/common/Pagination';
@@ -9,13 +9,13 @@ import FormulaireMenu from './components/FormulaireMenu';
 
 /** Entrées de navigation sur lesquelles s'appuie le RBAC. */
 export default function MenusPage() {
+  useTitrePage('Menus — SaamBiz Admin');
   const m = useMenus();
 
   if (m.loading) return <LoadingSpinner />;
 
   return (
     <>
-      <Helmet><title>Menus — SaamBiz Admin</title></Helmet>
       <div>
         <div className="page-header">
           <div className="page-header-left">

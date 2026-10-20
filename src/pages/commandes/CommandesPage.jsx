@@ -1,14 +1,17 @@
-import { Helmet } from 'react-helmet';
+import useTitrePage from '../../hooks/useTitrePage';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import Badge from '../../components/common/Badge';
 import Modal from '../../components/common/Modal';
 import SearchInput from '../../components/common/SearchInput';
 import Pagination from '../../components/common/Pagination';
 import { formatDate, formatMontant, formatStatut } from '../../utils/formatters';
-import useCommandes, { STATUTS, varianteStatut, nomPersonne } from './useCommandes';
+import useCommandes, {
+  STATUTS, varianteStatut, nomPersonne, referenceCommande,
+} from './useCommandes';
 
 /** Toutes les commandes de la marketplace, vue administration. */
 export default function CommandesPage() {
+  useTitrePage('Commandes — SaamBiz Admin');
   const c = useCommandes();
 
   if (c.loading) return <LoadingSpinner />;
@@ -17,12 +20,11 @@ export default function CommandesPage() {
 
   return (
     <div>
-      <Helmet><title>Commandes — SaamBiz Admin</title></Helmet>
 
       <div className="page-header">
         <div className="page-header-left">
           <h1>Commandes</h1>
-          <p>{c.elements.length} commande(s) au total</p>
+          <p>{c.total} commande(s) au total</p>
         </div>
       </div>
 
@@ -74,7 +76,7 @@ export default function CommandesPage() {
                 </tr>
               ) : c.pageCourante.map((cmd) => (
                 <tr key={cmd.id}>
-                  <td className="td-bold">{cmd.ref || `#${cmd.id}`}</td>
+                  <td className="td-bold">{referenceCommande(cmd)}</td>
                   <td className="td-muted">{nomPersonne(cmd.acheteur)}</td>
                   <td className="td-muted">{nomPersonne(cmd.vendeur)}</td>
                   <td className="td-bold">{formatMontant(cmd.montant)}</td>
@@ -111,7 +113,7 @@ export default function CommandesPage() {
         {detail && (
           <div className="detail-grid">
             <div className="detail-item">
-              <label>Référence</label><span>{detail.ref || `#${detail.id}`}</span>
+              <label>Référence</label><span>{referenceCommande(detail)}</span>
             </div>
             <div className="detail-item">
               <label>Statut</label>

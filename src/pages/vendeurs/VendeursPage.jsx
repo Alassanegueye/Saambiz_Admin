@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import useTitrePage from '../../hooks/useTitrePage';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import Modal from '../../components/common/Modal';
 import ConfirmModal from '../../components/common/ConfirmModal';
@@ -10,13 +10,13 @@ import DetailVendeur from './components/DetailVendeur';
 
 /** Comptes vendeurs de la plateforme. */
 export default function VendeursPage() {
+  useTitrePage('Vendeurs — SaamBiz Admin');
   const v = useVendeurs();
 
   if (v.loading) return <LoadingSpinner />;
 
   return (
     <div>
-      <Helmet><title>Vendeurs — SaamBiz Admin</title></Helmet>
 
       <div className="page-header">
         <div className="page-header-left">

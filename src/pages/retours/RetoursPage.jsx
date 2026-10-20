@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import useTitrePage from '../../hooks/useTitrePage';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import Badge from '../../components/common/Badge';
 import Modal from '../../components/common/Modal';
@@ -8,6 +8,7 @@ import useRetours, { STATUTS, varianteStatut, estTraitable } from './useRetours'
 
 /** Demandes de retour déposées par les acheteurs. */
 export default function RetoursPage() {
+  useTitrePage('Demandes de retour — SaamBiz Admin');
   const r = useRetours();
 
   if (r.loading) return <LoadingSpinner />;
@@ -16,7 +17,6 @@ export default function RetoursPage() {
 
   return (
     <div>
-      <Helmet><title>Demandes de retour — SaamBiz Admin</title></Helmet>
 
       <div className="page-header">
         <div className="page-header-left">

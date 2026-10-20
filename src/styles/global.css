@@ -987,3 +987,35 @@ table.data-table .td-muted { color: var(--color-text-muted); }
 .spinner-clair { border-color: rgba(255, 255, 255, 0.3); border-top-color: #fff; }
 /* Question posée dans une modale de confirmation. */
 .message-confirmation { font-size: 0.95rem; color: var(--color-text); }
+
+/* ── Catégories ── */
+.cat-aide { padding: 0 1.25rem 0.75rem; margin: 0; }
+.cat-aide-champ { margin: -0.5rem 0 0.75rem; }
+.cat-col-ordre { width: 88px; }
+.cat-col-nombre { text-align: right; width: 90px; }
+td.cat-col-nombre { font-variant-numeric: tabular-nums; }
+.cat-ordre { display: flex; gap: 4px; }
+.cat-ordre .btn { min-width: 30px; justify-content: center; }
+.cat-sous { font-size: 0.8rem; margin-top: 2px; }
+.cat-slug { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.75rem; }
+.cat-ligne-masquee td { opacity: 0.6; }
+.cat-ligne-masquee td:last-child { opacity: 1; }
+.cat-case { display: flex; align-items: center; gap: 8px; font-size: 0.875rem; cursor: pointer; margin-top: 0.25rem; }
+.cat-table .table-actions { flex-wrap: nowrap; }
+.cat-table td:nth-child(3) { white-space: nowrap; }
+
+/* ── Modale large ── */
+.modal.modal-large { max-width: 760px; }
+
+/* ── Spécifications produit (catégories) ── */
+.spec { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--color-border); display: flex; flex-direction: column; gap: 0.75rem; }
+.spec-entete { display: flex; flex-direction: column; gap: 2px; }
+.spec-vide { margin: 0; }
+.spec-ligne { display: flex; gap: 0.6rem; align-items: flex-start; padding: 0.75rem; border: 1px solid var(--color-border); border-radius: var(--radius-md, 10px); background: var(--color-bg); }
+.spec-rang { display: flex; flex-direction: column; gap: 4px; }
+.spec-champs { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.spec-duo { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 0.5rem; }
+.spec-options { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; align-items: center; font-size: 0.82rem; }
+.spec-options label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.spec-retirer { flex-shrink: 0; }
+@media (max-width: 600px) { .spec-duo { grid-template-columns: minmax(0, 1fr); } }

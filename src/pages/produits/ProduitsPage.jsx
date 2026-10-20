@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import useTitrePage from '../../hooks/useTitrePage';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import Modal from '../../components/common/Modal';
 import SearchInput from '../../components/common/SearchInput';
@@ -9,12 +9,12 @@ import TableProduitsEnAttente from './components/TableProduitsEnAttente';
 
 /** Catalogue produits et file de modération. */
 export default function ProduitsPage() {
+  useTitrePage('Produits — SaamBiz Admin');
   const p = useProduits();
   const surActifs = p.onglet === ONGLET_ACTIFS;
 
   return (
     <div>
-      <Helmet><title>Produits — SaamBiz Admin</title></Helmet>
 
       <div className="page-header">
         <div className="page-header-left">

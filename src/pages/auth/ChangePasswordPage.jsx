@@ -1,14 +1,14 @@
-import { Helmet } from 'react-helmet';
+import useTitrePage from '../../hooks/useTitrePage';
 import LOGO from '../../assets/images/logo-saambiz.png';
 import useChangementMotDePasse, { CHAMPS } from './useChangementMotDePasse';
 
 /** Écran imposé tant que le mot de passe temporaire n'a pas été remplacé. */
 export default function ChangePasswordPage() {
+  useTitrePage('Changement de mot de passe — SaamBiz Admin');
   const c = useChangementMotDePasse();
 
   return (
     <>
-      <Helmet><title>Changement de mot de passe — SaamBiz Admin</title></Helmet>
       <div className="login-page">
         <div className="login-card">
           <div className="login-logo-row">

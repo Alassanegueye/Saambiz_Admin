@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import useTitrePage from '../../hooks/useTitrePage';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import SearchInput from '../../components/common/SearchInput';
 import Pagination from '../../components/common/Pagination';
@@ -7,6 +7,7 @@ import useModeration from './useModeration';
 
 /** File des produits en attente de validation. */
 export default function ModerationPage() {
+  useTitrePage('Modération — SaamBiz Admin');
   const m = useModeration();
 
   if (m.loading) return <LoadingSpinner />;
@@ -16,7 +17,6 @@ export default function ModerationPage() {
 
   return (
     <div>
-      <Helmet><title>Modération — SaamBiz Admin</title></Helmet>
 
       <div className="page-header">
         <div className="page-header-left">

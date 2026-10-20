@@ -1,8 +1,11 @@
-import { Outlet } from 'react-router-dom';
+import { Suspense } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 import TopNav from './TopNav';
 import { usePermissions } from '../../hooks/usePermissions';
 import useInactivityLogout from '../../hooks/useInactivityLogout';
 import { useAuth } from '../../hooks/useAuth';
+import ErrorBoundary from '../common/ErrorBoundary';
+import LoadingSpinner from '../common/LoadingSpinner';
 
 /**
  * Icônes des rubriques, indexées par le code du menu RBAC.
@@ -30,6 +33,7 @@ const ICONE_DEFAUT = <><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4
 export default function AdminLayout() {
   const { menus } = usePermissions();
   const { logout } = useAuth();
+  const { pathname } = useLocation();
 
   useInactivityLogout(logout);
 
@@ -49,7 +53,23 @@ export default function AdminLayout() {
       <TopNav items={items} />
       <div className="admin-main">
         <div className="admin-content">
-          <Outlet />
+          {/* Chargement et erreurs gérés ICI, sous la barre de navigation.
+              - Suspense : auparavant un seul Suspense entourait toutes les
+                routes ; à chaque première visite d'une rubrique (page chargée
+                à la demande), toute l'interface, barre comprise, laissait
+                place à un spinner plein écran. La navigation reste désormais
+                affichée et seul le contenu attend.
+              - ErrorBoundary indexé sur l'adresse : chaque route avait le sien,
+                mais tous à la même position dans l'arbre. React réutilisait
+                donc l'instance d'une page à l'autre, et après une erreur sur
+                une rubrique, cliquer sur une autre affichait toujours
+                « Une erreur est survenue ». La clé force une instance neuve
+                à chaque changement de page. */}
+          <ErrorBoundary key={pathname}>
+            <Suspense fallback={<LoadingSpinner />}>
+              <Outlet />
+            </Suspense>
+          </ErrorBoundary>
         </div>
       </div>
     </div>

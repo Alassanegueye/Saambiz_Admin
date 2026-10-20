@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import useTitrePage from '../../hooks/useTitrePage';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import Modal from '../../components/common/Modal';
 import ConfirmModal from '../../components/common/ConfirmModal';
@@ -11,13 +11,13 @@ import GrillePermissions from './components/GrillePermissions';
 
 /** Comptes administrateurs et leurs droits (RBAC). */
 export default function AdminsPage() {
+  useTitrePage('Administrateurs — SaamBiz Admin');
   const a = useAdmins();
 
   if (a.loading) return <LoadingSpinner />;
 
   return (
     <>
-      <Helmet><title>Administrateurs — SaamBiz Admin</title></Helmet>
       <div>
         <div className="page-header">
           <div className="page-header-left">

@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import useTitrePage from '../../hooks/useTitrePage';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import Badge from '../../components/common/Badge';
 import SearchInput from '../../components/common/SearchInput';
@@ -11,6 +11,7 @@ import useSignalements, {
 
 /** Signalements remontés par les utilisateurs. */
 export default function SignalementsPage() {
+  useTitrePage('Signalements — SaamBiz Admin');
   const s = useSignalements();
 
   if (s.loading) return <LoadingSpinner />;
@@ -26,7 +27,6 @@ export default function SignalementsPage() {
 
   return (
     <div>
-      <Helmet><title>Signalements — SaamBiz Admin</title></Helmet>
 
       <div className="page-header">
         <div className="page-header-left">

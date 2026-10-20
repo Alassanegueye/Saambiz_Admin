@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { getPaiements, getPaiementsEchecs } from '../../service/paiements.service';
-import useListeFiltree from '../../hooks/useListeFiltree';
+import useListeServeur from '../../hooks/useListeServeur';
 
 /**
  * Contrôleur de la page Paiements.
@@ -29,13 +29,15 @@ const filtrer = (p, s) =>
 export default function usePaiements() {
   const [onglet, setOnglet] = useState('tous');
 
-  const chargerTous = useCallback(() => getPaiements(), []);
-  const chargerEchecs = useCallback(() => getPaiementsEchecs(), []);
+  // Pagination côté serveur : l'API ne renvoyait que les 20 derniers
+  // paiements, et la page les présentait comme « le total ».
+  const chargerTous = useCallback((params) => getPaiements(params), []);
+  const chargerEchecs = useCallback((params) => getPaiementsEchecs(params), []);
 
-  const tous = useListeFiltree(chargerTous, {
+  const tous = useListeServeur(chargerTous, {
     extraire, filtrer, messageErreur: 'Erreur lors du chargement des paiements',
   });
-  const echecs = useListeFiltree(chargerEchecs, {
+  const echecs = useListeServeur(chargerEchecs, {
     extraire, filtrer, messageErreur: 'Erreur lors du chargement des paiements échoués',
   });
 
@@ -50,7 +52,7 @@ export default function usePaiements() {
 
   return {
     onglet, changerOnglet, courant,
-    nbTous: tous.elements.length,
-    nbEchecs: echecs.elements.length,
+    nbTous: tous.total,
+    nbEchecs: echecs.total,
   };
 }

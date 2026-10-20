@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import useTitrePage from '../../hooks/useTitrePage';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import ConfirmModal from '../../components/common/ConfirmModal';
 import SearchInput from '../../components/common/SearchInput';
@@ -10,13 +10,13 @@ import FormulaireAbonnement from './components/FormulaireAbonnement';
 
 /** Abonnements des vendeurs à la plateforme. */
 export default function AbonnementsPage() {
+  useTitrePage('Abonnements — SaamBiz Admin');
   const a = useAbonnements();
 
   if (a.loading) return <LoadingSpinner />;
 
   return (
     <div>
-      <Helmet><title>Abonnements — SaamBiz Admin</title></Helmet>
 
       <div className="page-header">
         <div className="page-header-left">

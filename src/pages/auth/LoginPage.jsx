@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Helmet } from 'react-helmet';
+import useTitrePage from '../../hooks/useTitrePage';
 import { ROUTES, URL_ESPACE_VENDEUR } from '../../constants/routes';
 import useLoginForm from '../../hooks/useLoginForm';
 import PICTO from '../../assets/images/picto-saambiz.png';
@@ -13,6 +13,7 @@ import PICTO from '../../assets/images/picto-saambiz.png';
  * Volontairement sobre — c'est un back-office interne, pas une vitrine.
  */
 export default function LoginPage() {
+  useTitrePage('Administration — SaamBiz');
   const navigate = useNavigate();
 
   const { email, setEmail, password, setPassword, loading, frozen, countdown, handleSubmit } =
@@ -34,7 +35,6 @@ export default function LoginPage() {
 
   return (
     <>
-      <Helmet><title>Administration — SaamBiz</title></Helmet>
       <div className="login-page login-page-admin">
         <div className="login-admin-card">
           <div className="login-admin-head">

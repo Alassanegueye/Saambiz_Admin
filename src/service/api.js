@@ -2,7 +2,7 @@ import axios from 'axios';
 import {
   getToken, setToken, removeToken,
   getRefreshToken, setRefreshToken,
-  clearAuth,
+  clearAuth, tokenExpire,
 } from '../utils/storage';
 
 /**
@@ -18,34 +18,32 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
-api.interceptors.request.use((config) => {
-  const token = getToken();
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
-
 // ─── Prolongation silencieuse de session ────────────────────────────────────
 //
 // Le jeton d'accès vaut une heure. Sans ce mécanisme, l'application
 // déconnectait sèchement au bout d'une heure, en pleine saisie d'un produit,
 // alors que le backend émet un jeton de rafraîchissement prévu pour ça.
 //
-// La file d'attente est le point délicat : quand une page lance six requêtes
-// en parallèle et que le jeton vient d'expirer, les six reçoivent un 401. Sans
-// file, on déclenche six rafraîchissements concurrents — dont cinq échouent,
-// puisque le backend fait tourner le jeton à chaque usage — et l'utilisateur
-// est déconnecté malgré tout. On ne rafraîchit donc qu'une fois, les autres
-// attendent le résultat.
+// Le point délicat : quand une page lance six requêtes en parallèle et que le
+// jeton vient d'expirer, les six reçoivent un 401. Sans précaution, on
+// déclenche six rafraîchissements concurrents — dont cinq échouent, puisque
+// le backend fait tourner le jeton à chaque usage — et l'utilisateur est
+// déconnecté malgré tout. On ne rafraîchit donc qu'une fois : la promesse
+// partagée ci-dessous joue le rôle de file d'attente (tous les appelants
+// attendent la même), sans tableau de rappels à vider à la main.
 let rafraichissementEnCours = null;
-let fileDAttente = [];
 
-function libererLaFile(nouveauToken, erreur) {
-  fileDAttente.forEach(({ resoudre, rejeter }) => {
-    if (erreur) rejeter(erreur);
-    else resoudre(nouveauToken);
-  });
-  fileDAttente = [];
+function rafraichirUneSeuleFois() {
+  if (!rafraichissementEnCours) {
+    rafraichissementEnCours = rafraichirSession().finally(() => {
+      rafraichissementEnCours = null;
+    });
+  }
+  return rafraichissementEnCours;
 }
+
+const estRouteDAuth = (url = '') =>
+  url.includes('/auth/refresh') || url.includes('/auth/login');
 
 async function rafraichirSession() {
   const refresh = getRefreshToken();
@@ -70,6 +68,26 @@ async function rafraichirSession() {
   return token;
 }
 
+// ─── Envoi : jeton, et prolongation AVANT l'envoi si on le sait expiré ──────
+//
+// Standard SIGN : l'expiration est vérifiée côté client avant l'envoi. Sans
+// ce contrôle, chaque requête partie avec un jeton périmé faisait un aller-
+// retour pour rien (401), puis un refresh, puis un second envoi. Si le
+// rafraîchissement anticipé échoue, on envoie quand même : le backend
+// tranche, et l'intercepteur de réponse gère la déconnexion.
+api.interceptors.request.use(async (config) => {
+  if (!estRouteDAuth(config.url) && getRefreshToken() && tokenExpire()) {
+    try {
+      await rafraichirUneSeuleFois();
+    } catch {
+      // Laisser le 401 suivre le chemin normal ci-dessous.
+    }
+  }
+  const token = getToken();
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+
 function deconnecter() {
   clearAuth();
   if (window.location.pathname !== '/login') {
@@ -89,8 +107,7 @@ api.interceptors.response.use(
       statut === 401
       && requete
       && !requete._rejouee
-      && !requete.url?.includes('/auth/refresh')
-      && !requete.url?.includes('/auth/login');
+      && !estRouteDAuth(requete.url);
 
     if (!rejouable) {
       if (statut === 401) deconnecter();
@@ -104,33 +121,16 @@ api.interceptors.response.use(
       return Promise.reject(erreur);
     }
 
-    // Un rafraîchissement est déjà parti : on attend son résultat.
-    if (rafraichissementEnCours) {
-      return new Promise((resoudre, rejeter) => {
-        fileDAttente.push({
-          resoudre: (token) => {
-            requete.headers.Authorization = `Bearer ${token}`;
-            resoudre(api(requete));
-          },
-          rejeter,
-        });
-      });
-    }
-
-    rafraichissementEnCours = rafraichirSession();
-
+    // Qu'un rafraîchissement soit déjà parti ou non, tout le monde attend
+    // la même promesse.
     try {
-      const token = await rafraichissementEnCours;
-      libererLaFile(token, null);
+      const token = await rafraichirUneSeuleFois();
       requete.headers.Authorization = `Bearer ${token}`;
       return api(requete);
-    } catch (echec) {
-      libererLaFile(null, echec);
+    } catch {
       removeToken();
       deconnecter();
       return Promise.reject(erreur);
-    } finally {
-      rafraichissementEnCours = null;
     }
   }
 );

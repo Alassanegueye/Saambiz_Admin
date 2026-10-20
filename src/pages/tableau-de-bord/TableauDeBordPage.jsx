@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import useTitrePage from '../../hooks/useTitrePage';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import MiniBarChart from '../../components/common/MiniBarChart';
 import { formatMontant } from '../../utils/formatters';
@@ -12,6 +12,7 @@ import {
 
 /** Vue d'ensemble de la plateforme. */
 export default function TableauDeBordPage() {
+  useTitrePage("Vue d'ensemble — SaamBiz Admin");
   const t = useTableauDeBord();
 
   if (t.loading) return <LoadingSpinner />;
@@ -21,7 +22,6 @@ export default function TableauDeBordPage() {
 
   return (
     <>
-      <Helmet><title>Vue d&apos;ensemble — SaamBiz Admin</title></Helmet>
       <div>
         <div className="page-header">
           <div className="page-header-left">

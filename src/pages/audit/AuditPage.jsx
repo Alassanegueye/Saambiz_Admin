@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import useTitrePage from '../../hooks/useTitrePage';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import SearchInput from '../../components/common/SearchInput';
 import Pagination from '../../components/common/Pagination';
@@ -7,6 +7,7 @@ import useAudit from './useAudit';
 
 /** Journal des actions d'administration — qui a fait quoi, et quand. */
 export default function AuditPage() {
+  useTitrePage("Logs d'audit — SaamBiz Admin");
   const a = useAudit();
 
   if (a.loading) return <LoadingSpinner />;
@@ -19,7 +20,6 @@ export default function AuditPage() {
 
   return (
     <div>
-      <Helmet><title>Logs d&apos;audit — SaamBiz Admin</title></Helmet>
 
       <div className="page-header">
         <div className="page-header-left">

@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import useTitrePage from '../../hooks/useTitrePage';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import useProfil from './useProfil';
 import FormulaireIdentite from './components/FormulaireIdentite';
@@ -9,13 +9,13 @@ import FormulaireMotDePasse from './components/FormulaireMotDePasse';
  * barre de navigation.
  */
 export default function ProfilPage() {
+  useTitrePage('Mon profil — SaamBiz Admin');
   const p = useProfil();
 
   if (p.chargement) return <LoadingSpinner fullPage />;
 
   return (
     <div>
-      <Helmet><title>Mon profil — SaamBiz Admin</title></Helmet>
 
       <div className="page-header">
         <div className="page-header-left">

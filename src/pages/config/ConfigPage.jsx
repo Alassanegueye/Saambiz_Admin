@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import useTitrePage from '../../hooks/useTitrePage';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import ConfirmModal from '../../components/common/ConfirmModal';
 import Modal from '../../components/common/Modal';
@@ -10,6 +10,7 @@ import ListeConfigs from './components/ListeConfigs';
 
 /** Paramètres de la plateforme : prix de l'abonnement et configurations générales. */
 export default function ConfigPage() {
+  useTitrePage('Configuration — SaamBiz Admin');
   const c = useConfig();
 
   if (c.loading) return <LoadingSpinner />;
@@ -21,7 +22,6 @@ export default function ConfigPage() {
 
   return (
     <div>
-      <Helmet><title>Configuration — SaamBiz Admin</title></Helmet>
 
       <div className="page-header">
         <div className="page-header-left">

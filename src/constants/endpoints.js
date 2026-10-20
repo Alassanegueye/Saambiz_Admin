@@ -139,10 +139,12 @@ export const ENDPOINTS = {
 
   // ── Catégories ────────────────────────────────────────────────────────────
   CATEGORIES: {
-    LIST:   '/categories/',                         // GET public
-    CREATE: '/admin/ajout-categorie',               // POST (admin)
-    UPDATE: (id) => `/admin/categorie/${id}`,       // PUT (admin)
-    DELETE: (id) => `/admin/categorie/${id}`,       // DELETE (admin)
+    LIST:    '/admin/categories',                    // GET admin : masquées comprises + usage
+    PUBLIC:  '/categories/',                         // GET public : actives seulement
+    CREATE:  '/admin/ajout-categorie',               // POST (admin)
+    UPDATE:  (id) => `/admin/categorie/${id}`,       // PUT (admin)
+    DELETE:  (id) => `/admin/categorie/${id}`,       // DELETE (admin) ?remplacerPar=<id>
+    REORDER: '/admin/categories/ordre',              // PUT (admin) { ids: [...] }
   },
 
   // ── Signalements (liste admin) ────────────────────────────────────────────

@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import useTitrePage from '../../hooks/useTitrePage';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import Modal from '../../components/common/Modal';
 import ConfirmModal from '../../components/common/ConfirmModal';
@@ -7,6 +7,7 @@ import TableDemandes from './components/TableDemandes';
 
 /** File d'attente des profils vendeurs à examiner. */
 export default function ValidationVendeursPage() {
+  useTitrePage('Validation des vendeurs — SaamBiz Admin');
   const v = useValidationVendeurs();
 
   if (v.loading) return <LoadingSpinner fullPage />;
@@ -17,7 +18,6 @@ export default function ValidationVendeursPage() {
 
   return (
     <div>
-      <Helmet><title>Validation des vendeurs — SaamBiz Admin</title></Helmet>
 
       <div className="page-header">
         <div className="page-header-left">

@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import useTitrePage from '../../hooks/useTitrePage';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import Badge from '../../components/common/Badge';
 import SearchInput from '../../components/common/SearchInput';
@@ -8,13 +8,13 @@ import usePaiements, { varianteStatut } from './usePaiements';
 
 /** Transactions de la marketplace, et celles qui ont échoué. */
 export default function PaiementsPage() {
+  useTitrePage('Paiements — SaamBiz Admin');
   const p = usePaiements();
   const liste = p.courant;
   const surEchecs = p.onglet === 'echecs';
 
   return (
     <div>
-      <Helmet><title>Paiements — SaamBiz Admin</title></Helmet>
 
       <div className="page-header">
         <div className="page-header-left">

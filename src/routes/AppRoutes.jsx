@@ -47,26 +47,28 @@ export default function AppRoutes() {
           </Route>
 
           <Route element={<ProtectedRoute />}>
+            {/* Pages sans ErrorBoundary individuel : AdminLayout en pose un
+                par adresse autour de son Outlet (voir le commentaire là-bas). */}
             <Route element={<AdminLayout />}>
-              <Route path={ROUTES.DASHBOARD}    element={<ErrorBoundary><TableauDeBordPage /></ErrorBoundary>} />
-              <Route path={ROUTES.VENDEURS}     element={<ErrorBoundary><VendeursPage /></ErrorBoundary>} />
-              <Route path={ROUTES.ACHETEURS}    element={<ErrorBoundary><AcheteursPage /></ErrorBoundary>} />
-              <Route path={ROUTES.PRODUITS}     element={<ErrorBoundary><ProduitsPage /></ErrorBoundary>} />
-              <Route path={ROUTES.CATEGORIES}   element={<ErrorBoundary><CategoriesPage /></ErrorBoundary>} />
-              <Route path={ROUTES.COMMANDES}    element={<ErrorBoundary><CommandesPage /></ErrorBoundary>} />
-              <Route path={ROUTES.PAIEMENTS}    element={<ErrorBoundary><PaiementsPage /></ErrorBoundary>} />
-              <Route path={ROUTES.ABONNEMENTS}  element={<ErrorBoundary><AbonnementsPage /></ErrorBoundary>} />
-              <Route path={ROUTES.MODERATION}   element={<ErrorBoundary><ModerationPage /></ErrorBoundary>} />
-              <Route path={ROUTES.SIGNALEMENTS} element={<ErrorBoundary><SignalementsPage /></ErrorBoundary>} />
-              <Route path={ROUTES.ADMINS}       element={<ErrorBoundary><AdminsPage /></ErrorBoundary>} />
-              <Route path={ROUTES.MENUS}        element={<ErrorBoundary><MenusPage /></ErrorBoundary>} />
-              <Route path={ROUTES.CONFIG}       element={<ErrorBoundary><ConfigPage /></ErrorBoundary>} />
-              <Route path={ROUTES.RETOURS}      element={<ErrorBoundary><RetoursPage /></ErrorBoundary>} />
-              <Route path={ROUTES.AUDIT_LOGS}   element={<ErrorBoundary><AuditLogsPage /></ErrorBoundary>} />
-              <Route path={ROUTES.VALIDATION_VENDEURS} element={<ErrorBoundary><ValidationVendeursPage /></ErrorBoundary>} />
+              <Route path={ROUTES.DASHBOARD}    element={<TableauDeBordPage />} />
+              <Route path={ROUTES.VENDEURS}     element={<VendeursPage />} />
+              <Route path={ROUTES.ACHETEURS}    element={<AcheteursPage />} />
+              <Route path={ROUTES.PRODUITS}     element={<ProduitsPage />} />
+              <Route path={ROUTES.CATEGORIES}   element={<CategoriesPage />} />
+              <Route path={ROUTES.COMMANDES}    element={<CommandesPage />} />
+              <Route path={ROUTES.PAIEMENTS}    element={<PaiementsPage />} />
+              <Route path={ROUTES.ABONNEMENTS}  element={<AbonnementsPage />} />
+              <Route path={ROUTES.MODERATION}   element={<ModerationPage />} />
+              <Route path={ROUTES.SIGNALEMENTS} element={<SignalementsPage />} />
+              <Route path={ROUTES.ADMINS}       element={<AdminsPage />} />
+              <Route path={ROUTES.MENUS}        element={<MenusPage />} />
+              <Route path={ROUTES.CONFIG}       element={<ConfigPage />} />
+              <Route path={ROUTES.RETOURS}      element={<RetoursPage />} />
+              <Route path={ROUTES.AUDIT_LOGS}   element={<AuditLogsPage />} />
+              <Route path={ROUTES.VALIDATION_VENDEURS} element={<ValidationVendeursPage />} />
               {/* Hors menu RBAC : accessible par le menu du compte, à droite
                   de la barre de navigation. */}
-              <Route path={ROUTES.PROFIL}       element={<ErrorBoundary><ProfilPage /></ErrorBoundary>} />
+              <Route path={ROUTES.PROFIL}       element={<ProfilPage />} />
             </Route>
           </Route>
 
