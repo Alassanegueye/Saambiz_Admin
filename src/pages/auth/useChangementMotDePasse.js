@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from '../../utils/alert';
 import { changerMotDePasse } from '../../service/password.service';
 import { useAuth } from '../../hooks/useAuth';
 

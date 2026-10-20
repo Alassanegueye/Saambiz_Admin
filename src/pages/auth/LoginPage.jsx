@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { toast } from '../../utils/alert';
 import useTitrePage from '../../hooks/useTitrePage';
 import { ROUTES, URL_ESPACE_VENDEUR } from '../../constants/routes';
 import useLoginForm from '../../hooks/useLoginForm';

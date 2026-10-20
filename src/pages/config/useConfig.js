@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from '../../utils/alert';
 import { getPrixAbonnement, updatePrixAbonnement } from '../../service/admin.service';
 import { getConfigs, createConfig, updateConfig } from '../../service/configs.service';
 

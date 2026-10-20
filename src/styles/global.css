@@ -878,10 +878,23 @@ table.data-table .td-muted { color: var(--color-text-muted); }
   animation: slideUp 0.35s ease;
 }
 .login-admin-head {
-  display: flex; align-items: center; gap: 14px;
+  /* Hauteur du logo définie une seule fois : le titre s'y aligne plus bas,
+     et les deux restent synchronisés si on change la taille. */
+  --taille-logo: 40px;
+  display: flex;
+  /* flex-start, et non center : le bloc texte (titre + sous-titre) est plus
+     HAUT que le logo. Centrer l'ensemble remonte donc le titre au-dessus du
+     logo au lieu de l'aligner dessus. On part du haut, et c'est le titre
+     seul qu'on centre sur le logo, juste en dessous. */
+  align-items: flex-start;
+  gap: 14px;
   margin-bottom: 1.75rem;
 }
-.login-admin-head img { height: 40px; width: auto; }
+.login-admin-head img { height: var(--taille-logo); width: auto; }
+/* Le titre occupe une ligne de la hauteur exacte du logo : son centre optique
+   tombe donc pile sur le centre du logo, quelle que soit la longueur du
+   sous-titre en dessous. */
+.login-admin-head .login-form-title { line-height: var(--taille-logo); }
 
 /* ── Bandeau du mode démo ── */
 .bandeau-demo {
@@ -1019,3 +1032,26 @@ td.cat-col-nombre { font-variant-numeric: tabular-nums; }
 .spec-options label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
 .spec-retirer { flex-shrink: 0; }
 @media (max-width: 600px) { .spec-duo { grid-template-columns: minmax(0, 1fr); } }
+
+/* ── SweetAlert2 — alertes harmonisées avec la charte (comme Yobante) ── */
+.swal2-saambiz {
+  font-family: inherit;
+  border-radius: 0.75rem;
+}
+.swal2-saambiz__titre {
+  font-weight: 700;
+  color: #0D1B3D;
+}
+.swal2-saambiz .swal2-confirm,
+.swal2-saambiz .swal2-cancel {
+  border-radius: 0.5rem;
+  font-weight: 600;
+}
+.swal2-saambiz .swal2-timer-progress-bar {
+  background: rgba(242, 183, 5, 0.75);
+}
+@media (max-width: 480px) {
+  .swal2-saambiz {
+    width: calc(100% - 2rem) !important;
+  }
+}

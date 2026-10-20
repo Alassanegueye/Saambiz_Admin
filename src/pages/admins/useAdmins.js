@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from '../../utils/alert';
 import {
   getAdmins, creerAdmin, supprimerAdmin,
   getAdminPermissions, updateAdminPerms, getMenus,

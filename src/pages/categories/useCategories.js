@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from '../../utils/alert';
 import {
   getCategories,
   createCategorie,

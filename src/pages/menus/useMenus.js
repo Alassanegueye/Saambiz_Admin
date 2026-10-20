@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from '../../utils/alert';
 import { getMenus, creerMenu, updateMenu, supprimerMenu } from '../../service/rbac.service';
 import useListeFiltree from '../../hooks/useListeFiltree';
 
