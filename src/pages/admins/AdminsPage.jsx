@@ -10,7 +10,8 @@ import FormulaireAdmin from './components/FormulaireAdmin';
 import GrillePermissions from './components/GrillePermissions';
 import FormulaireCompte from '../../components/forms/FormulaireCompte';
 import AvatarPersonne from '../../components/common/AvatarPersonne';
-import { formatDate } from '../../utils/formatters';
+import { formatDate, formatDateTime } from '../../utils/formatters';
+import { Link } from 'react-router-dom';
 
 /** Comptes administrateurs et leurs droits (RBAC). */
 export default function AdminsPage() {
@@ -95,6 +96,9 @@ export default function AdminsPage() {
           footer={(
             <>
               <button className="btn btn-secondary" onClick={a.fermerDetail}>Fermer</button>
+              <Link className="btn btn-secondary" to={`/audit-logs?admin=${a.selection?.id}&periode=tout`}>
+                Voir son activité
+              </Link>
               <button
                 className="btn btn-primary"
                 onClick={() => { const s = a.selection; a.fermerDetail(); a.ouvrirPermissions(s); }}
@@ -116,7 +120,15 @@ export default function AdminsPage() {
               <div className="detail-grid">
                 <div className="detail-item">
                   <label>Première connexion</label>
-                  <span>{a.selection.isFirstLogin ? 'Pas encore connecté' : 'Effectuée'}</span>
+                  <span>
+                    {a.selection.premiereConnexion
+                      ? formatDateTime(a.selection.premiereConnexion)
+                      : a.selection.isFirstLogin ? 'En attente' : 'Effectuée'}
+                  </span>
+                </div>
+                <div className="detail-item">
+                  <label>Dernière connexion</label>
+                  <span>{a.selection.derniereConnexion ? formatDateTime(a.selection.derniereConnexion) : '—'}</span>
                 </div>
                 <div className="detail-item">
                   <label>Inscrit le</label><span>{formatDate(a.selection.createdAt)}</span>

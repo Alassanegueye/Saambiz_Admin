@@ -1,6 +1,6 @@
 import Badge from '../../../components/common/Badge';
 import AvatarPersonne from '../../../components/common/AvatarPersonne';
-import { formatDate } from '../../../utils/formatters';
+import { formatDate, formatDateTime } from '../../../utils/formatters';
 
 /** Liste des comptes administrateurs. */
 export default function TableAdmins({
@@ -14,6 +14,7 @@ export default function TableAdmins({
             <th>Administrateur</th>
             <th>Email</th>
             <th>Première connexion</th>
+            <th>Dernière connexion</th>
             <th>Inscrit le</th>
             <th>Actions</th>
           </tr>
@@ -21,7 +22,7 @@ export default function TableAdmins({
         <tbody>
           {admins.length === 0 ? (
             <tr>
-              <td colSpan={5}>
+              <td colSpan={6}>
                 <div className="empty-state">
                   <p>
                     {recherche
@@ -41,11 +42,22 @@ export default function TableAdmins({
               </td>
               <td className="td-muted">{a.email}</td>
               <td>
-                {/* Tant que le compte n'a pas servi, le mot de passe initial
-                    envoyé par email est encore en circulation. */}
-                <Badge variant={a.isFirstLogin ? 'warning' : 'success'}>
-                  {a.isFirstLogin ? 'Non connecté' : 'Connecté'}
-                </Badge>
+                {/* Date réelle dès qu'elle est connue ; sinon, tant que le
+                    mot de passe initial n'a pas été changé, la connexion est
+                    « en attente ». Un compte déjà utilisé avant l'ajout du
+                    suivi des dates reste « effectuée » sans date. */}
+                {a.premiereConnexion ? (
+                  <span className="td-muted" title={formatDateTime(a.premiereConnexion)}>
+                    {formatDate(a.premiereConnexion)}
+                  </span>
+                ) : a.isFirstLogin ? (
+                  <Badge variant="warning">En attente</Badge>
+                ) : (
+                  <Badge variant="success">Effectuée</Badge>
+                )}
+              </td>
+              <td className="td-muted" title={a.derniereConnexion ? formatDateTime(a.derniereConnexion) : undefined}>
+                {a.derniereConnexion ? formatDateTime(a.derniereConnexion) : '—'}
               </td>
               <td className="td-muted">{formatDate(a.createdAt)}</td>
               <td>

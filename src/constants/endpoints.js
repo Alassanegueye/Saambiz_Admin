@@ -136,6 +136,7 @@ export const ENDPOINTS = {
   // ── Logs d'audit ──────────────────────────────────────────────────────────
   AUDIT_LOGS: {
     LIST: '/admin/audit-logs',
+    RESUME: '/admin/audit-logs/resume',
   },
 
   // ── Configuration générale ────────────────────────────────────────────────

@@ -1292,3 +1292,15 @@ td.cat-col-nombre { font-variant-numeric: tabular-nums; }
 .acces-section { margin-top: 0.5rem; }
 .acces-section-titre { font-size: 0.875rem; font-weight: 500; color: #374151; margin: 0 0 0.25rem; }
 .acces-section-aide { font-size: 0.75rem; color: #6B7280; margin: 0 0 0.5rem; }
+
+/* ── Activité des admins ── */
+.stats-grid.stats-grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 900px) { .stats-grid.stats-grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.stat-card-aide { margin-top: 0.25rem; font-size: 0.72rem; color: var(--color-text-muted); }
+.ligne-cliquable { cursor: pointer; }
+.ligne-cliquable:hover td { background: #F9FAFB; }
+.ligne-choisie td { background: rgba(13, 27, 61, 0.05); }
+.bouton-lien { background: none; border: none; cursor: pointer; font-family: inherit; padding: 0; }
+.texte-code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.78rem; word-break: break-all; }
+.page-header .filtres-statut { align-self: center; }
+.card + .card { margin-top: 1.25rem; }
