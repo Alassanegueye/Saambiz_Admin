@@ -58,3 +58,6 @@ export const getInscriptionsMensuelles = () => api.get(E.INSCRIPTIONS_MENSUELLES
 export const getVendeursAValider = ()            => api.get(ENDPOINTS.ADMIN.VENDEURS_A_VALIDER);
 export const validerProfilVendeur = (id)         => api.put(ENDPOINTS.ADMIN.VALIDER_VENDEUR(id));
 export const rejeterProfilVendeur = (id, motif)  => api.put(ENDPOINTS.ADMIN.REJETER_VENDEUR(id), { motif });
+
+// ── Site web (vitrine) d'une boutique ──
+export const basculerSiteBoutique = (boutiqueId, active) => api.put(E.SITE_BOUTIQUE(boutiqueId), { active });

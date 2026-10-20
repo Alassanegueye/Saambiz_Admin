@@ -74,6 +74,7 @@ export const ENDPOINTS = {
 
     // Boutique
     SUPPRIMER_BOUTIQUE: (id) => `/admin/boutique/${id}`,
+    SITE_BOUTIQUE:      (id) => `/admin/boutique/${id}/site`,
     BOUTIQUES_OPTIONS:  '/admin/boutiques-options',
 
     // Catalogue : produits et commandes gérés par boutique

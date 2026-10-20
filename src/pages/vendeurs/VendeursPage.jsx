@@ -45,6 +45,7 @@ export default function VendeursPage() {
           onModifier={v.ouvrirModification}
           onAbonnement={v.activerAbonnement}
           onVerifier={v.verifier}
+          onSite={v.basculerSite}
           onBasculer={v.basculerStatut}
           onSupprimer={v.supprimer}
         />

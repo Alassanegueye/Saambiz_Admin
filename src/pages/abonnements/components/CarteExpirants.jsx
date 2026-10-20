@@ -1,5 +1,5 @@
 import Badge from '../../../components/common/Badge';
-import { formatDate } from '../../../utils/formatters';
+import { formatDate, libelle } from '../../../utils/formatters';
 import { varianteStatut, nomVendeur, JOURS_ALERTE_EXPIRATION } from '../useAbonnements';
 
 /** Alerte : abonnements dont l'échéance approche, à relancer. */
@@ -18,10 +18,10 @@ export default function CarteExpirants({ abonnements }) {
             {abonnements.map((a) => (
               <tr key={a.id}>
                 <td className="td-bold">{nomVendeur(a)}</td>
-                <td className="td-muted">{a.type || '—'}</td>
+                <td className="td-muted">{libelle(a.type)}</td>
                 <td className="td-muted">{formatDate(a.dateFin)}</td>
                 <td>
-                  <Badge variant={varianteStatut(a.statut)}>{a.statut || 'Actif'}</Badge>
+                  <Badge variant={varianteStatut(a.statut)}>{libelle(a.statut || 'actif')}</Badge>
                 </td>
               </tr>
             ))}

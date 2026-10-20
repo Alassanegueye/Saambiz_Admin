@@ -1,11 +1,17 @@
-import { toast } from '../../utils/alert';
+import { toast, showConfirm } from '../../utils/alert';
 import {
-  getVendeurs, abonnementManuel, verifierVendeur,
+  getVendeurs, abonnementManuel, verifierVendeur, basculerSiteBoutique,
   creerVendeur, modifierVendeur, suspendreVendeur, activerVendeur, supprimerVendeur,
 } from '../../service/admin.service';
 import useComptes, { nomComplet, estActif } from '../../hooks/useComptes';
 
 export { nomComplet, estActif };
+
+/** Boutique du vendeur (une par vendeur), avec l'état de son site. */
+export const boutiqueDe = (v) => (Array.isArray(v?.boutiques) ? v.boutiques[0] : v?.boutiques) || null;
+
+const SITE_BASE = (import.meta.env.VITE_SITE_URL || 'https://www.saambiz.com').replace(/\/+$/, '');
+export const adresseSite = (b) => (b?.slug ? `${SITE_BASE}/b/${b.slug}` : null);
 
 export function varianteStatut(actif) {
   return actif ? 'success' : 'danger';
@@ -52,5 +58,28 @@ export default function useVendeurs() {
     }
   };
 
-  return { ...c, activerAbonnement, verifier };
+  // Site web de la boutique : activé ou coupé par l'admin.
+  const basculerSite = async (vendeur) => {
+    const b = boutiqueDe(vendeur);
+    if (!b) { toast.info("Ce vendeur n'a pas encore créé sa boutique."); return; }
+    const activer = !b.vitrineActive;
+    const ok = await showConfirm({
+      titre: activer ? 'Activer le site' : 'Désactiver le site',
+      message: activer
+        ? `Mettre en ligne le site de « ${b.nom} » ? Il sera visible par tous à son adresse.`
+        : `Mettre hors ligne le site de « ${b.nom} » ? La boutique reste visible dans l'application.`,
+      confirmText: activer ? 'Activer' : 'Désactiver',
+      danger: !activer,
+    });
+    if (!ok) return;
+    try {
+      await basculerSiteBoutique(b.id, activer);
+      toast.success(activer ? `Site de « ${b.nom} » en ligne` : `Site de « ${b.nom} » hors ligne`);
+      await c.recharger();
+    } catch (err) {
+      toast.error(err, 'Impossible de modifier le site');
+    }
+  };
+
+  return { ...c, activerAbonnement, verifier, basculerSite };
 }

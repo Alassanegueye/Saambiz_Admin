@@ -1,5 +1,5 @@
 import Badge from '../../../components/common/Badge';
-import { formatDate } from '../../../utils/formatters';
+import { formatDate, libelle } from '../../../utils/formatters';
 import { varianteStatut, nomVendeur } from '../useAbonnements';
 
 /** Liste des abonnements vendeurs. */
@@ -33,11 +33,11 @@ export default function TableAbonnements({ abonnements, recherche, onRevoquer })
           ) : abonnements.map((a) => (
             <tr key={a.id}>
               <td className="td-bold">{nomVendeur(a)}</td>
-              <td className="td-muted">{a.type || '—'}</td>
+              <td className="td-muted">{libelle(a.type)}</td>
               <td className="td-muted">{formatDate(a.dateDebut)}</td>
               <td className="td-muted">{formatDate(a.dateFin)}</td>
               <td>
-                <Badge variant={varianteStatut(a.statut)}>{a.statut || 'Actif'}</Badge>
+                <Badge variant={varianteStatut(a.statut)}>{libelle(a.statut || 'actif')}</Badge>
               </td>
               <td>
                 {/* Seul un abonnement encore actif peut être révoqué. */}

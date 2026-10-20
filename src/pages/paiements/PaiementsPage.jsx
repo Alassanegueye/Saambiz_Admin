@@ -3,7 +3,7 @@ import LoadingSpinner from '../../components/common/LoadingSpinner';
 import Badge from '../../components/common/Badge';
 import SearchInput from '../../components/common/SearchInput';
 import Pagination from '../../components/common/Pagination';
-import { formatDateTime, formatMontant, formatStatut } from '../../utils/formatters';
+import { formatDateTime, formatMontant, formatStatut, libelle } from '../../utils/formatters';
 import usePaiements, { varianteStatut } from './usePaiements';
 
 /** Transactions de la marketplace, et celles qui ont échoué. */
@@ -77,7 +77,7 @@ export default function PaiementsPage() {
                     <tr key={paiement.id}>
                       <td className="td-muted">#{paiement.id}</td>
                       <td className="td-bold">{formatMontant(paiement.montant)}</td>
-                      <td className="td-muted">{paiement.type || '—'}</td>
+                      <td className="td-muted">{libelle(paiement.type)}</td>
                       <td>
                         <Badge variant={varianteStatut(paiement.statut)}>
                           {formatStatut(paiement.statut)}

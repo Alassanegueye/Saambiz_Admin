@@ -1,6 +1,6 @@
 import AvatarPersonne from '../../../components/common/AvatarPersonne';
 import { formatDate } from '../../../utils/formatters';
-import { libelleStatut, estActif } from '../useVendeurs';
+import { libelleStatut, estActif, boutiqueDe, adresseSite } from '../useVendeurs';
 
 /** Fiche d'un vendeur, dans la modale de détail. */
 export default function DetailVendeur({ vendeur }) {
@@ -30,7 +30,15 @@ export default function DetailVendeur({ vendeur }) {
           <label>Inscription</label><span>{formatDate(vendeur.createdAt)}</span>
         </div>
         <div className="detail-item">
-          <label>Boutique</label><span>{vendeur.boutiques?.nom || '—'}</span>
+          <label>Boutique</label><span>{boutiqueDe(vendeur)?.nom || '—'}</span>
+        </div>
+        <div className="detail-item">
+          <label>Site web</label>
+          <span>
+            {!boutiqueDe(vendeur) ? '—' : boutiqueDe(vendeur).vitrineActive ? (
+              <a href={adresseSite(boutiqueDe(vendeur))} target="_blank" rel="noreferrer">En ligne — ouvrir</a>
+            ) : 'Hors ligne'}
+          </span>
         </div>
         {vendeur.adresse && (
           <div className="detail-item full">

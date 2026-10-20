@@ -1,4 +1,5 @@
 import useTitrePage from '../../hooks/useTitrePage';
+import { libelle } from '../../utils/formatters';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import useProfil from './useProfil';
 import FormulaireIdentite from './components/FormulaireIdentite';
@@ -30,7 +31,7 @@ export default function ProfilPage() {
           <strong>{`${p.profil.prenom} ${p.profil.nom}`.trim() || 'Compte'}</strong>
           <span>{p.profil.email}</span>
         </div>
-        <span className="profil-role">{p.role}</span>
+        <span className="profil-role">{libelle(p.role)}</span>
       </div>
 
       <div className="profil-grille">

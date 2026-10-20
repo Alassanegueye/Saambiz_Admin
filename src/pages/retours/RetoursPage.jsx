@@ -5,6 +5,7 @@ import Modal from '../../components/common/Modal';
 import SearchInput from '../../components/common/SearchInput';
 import Pagination from '../../components/common/Pagination';
 import useRetours, { STATUTS, varianteStatut, estTraitable } from './useRetours';
+import { libelle } from '../../utils/formatters';
 
 /** Demandes de retour déposées par les acheteurs. */
 export default function RetoursPage() {
@@ -78,7 +79,7 @@ export default function RetoursPage() {
                   </td>
                   <td>
                     <Badge variant={varianteStatut(demande.statut)}>
-                      {demande.statut || 'En attente'}
+                      {libelle(demande.statut || 'en_attente')}
                     </Badge>
                   </td>
                   <td>

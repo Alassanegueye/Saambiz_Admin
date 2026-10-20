@@ -43,6 +43,8 @@ const PARTICULIERS = {
   rejeter_profil_vendeur: { texte: 'Profil refusé', ton: 'danger' },
   modifier_prix_abonnement: { texte: "Prix de l'abonnement", ton: 'info' },
   modifier_config: { texte: 'Réglage modifié', ton: 'info' },
+  activer_site: { texte: 'Site activé', ton: 'success' },
+  desactiver_site: { texte: 'Site désactivé', ton: 'warning' },
 };
 
 export const libelleAction = (action = '') => {
