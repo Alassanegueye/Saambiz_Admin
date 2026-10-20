@@ -12,7 +12,7 @@ import { AIDES, construireNavigation, estActif } from './navigationAdmin';
  *  - rubriques regroupées par sujet (menus dépliants), centrées, sans menu
  *    « Plus » ;
  *  - rubrique active repérée par un simple soulignement, sans fond coloré ;
- *  - à droite, les initiales de l'administrateur connecté ; nom, email et
+ *  - à droite, les initiales et le nom de l'administrateur connecté ; nom, email et
  *    rôle ne s'affichent que dans le menu de compte.
  * Sous 1024 px, un tiroir liste l'arborescence complète.
  */
@@ -161,7 +161,7 @@ export default function TopNav({ items = [] }) {
           </ul>
         </nav>
 
-        {/* Compte : initiales seules dans la barre. */}
+        {/* Compte : initiales et nom de l'administrateur connecté. */}
         <div className="tn-compte">
           <button
             type="button"
@@ -171,7 +171,8 @@ export default function TopNav({ items = [] }) {
             aria-expanded={menuCompte}
             title={nomComplet}
           >
-            <span className="tn-avatar" aria-label={nomComplet}>{initiales}</span>
+            <span className="tn-avatar" aria-hidden="true">{initiales}</span>
+            <span className="tn-compte-nom">{nomComplet}</span>
             <Chevron ouvert={menuCompte} />
           </button>
 

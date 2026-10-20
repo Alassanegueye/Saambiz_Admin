@@ -1118,14 +1118,19 @@ td.cat-col-nombre { font-variant-numeric: tabular-nums; }
 
 .tn-compte { position: relative; display: flex; align-items: center; flex-shrink: 0; }
 .tn-compte-btn {
-  display: flex; align-items: center; gap: 6px;
-  padding: 6px; border: none; border-radius: 10px;
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 8px 6px 6px; border: none; border-radius: 10px;
   background: none; cursor: pointer; color: #9CA3AF;
 }
+.tn-compte-nom {
+  max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-family: inherit; font-size: 14.5px; font-weight: 500; color: #1F2937;
+}
+@media (max-width: 640px) { .tn-compte-nom { display: none; } }
 .tn-compte-btn:hover, .tn-compte-btn.ouvert { background: #F3F4F6; }
 .tn-avatar {
   width: 34px; height: 34px; border-radius: 9px;
-  background: #E8EDF7; color: var(--color-primary);
+  background: #FEF6DC; color: #A86B00;
   display: grid; place-items: center;
   font-size: 12.5px; font-weight: 800; letter-spacing: 0.02em;
 }
