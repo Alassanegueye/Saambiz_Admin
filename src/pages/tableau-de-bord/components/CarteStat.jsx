@@ -2,8 +2,8 @@ import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 /**
- * Compteur mis en avant en tête de tableau de bord. Avec `to`, la carte
- * ouvre la liste des éléments concernés (ex. les vendeurs inactifs).
+ * Compteur mis en avant en tête de tableau de bord. Avec `to`, toute la
+ * carte est cliquable et ouvre la liste concernée (ex. les vendeurs inactifs).
  */
 const CarteStat = memo(function CarteStat({ label, valeur, couleur, icone, to }) {
   const contenu = (
@@ -13,7 +13,6 @@ const CarteStat = memo(function CarteStat({ label, valeur, couleur, icone, to })
       </div>
       <div className="stat-card-value">{valeur ?? 0}</div>
       <div className="stat-card-label">{label}</div>
-      {to && <span className="stat-card-lien-texte">Consulter →</span>}
     </>
   );
   if (!to) return <div className="stat-card">{contenu}</div>;
