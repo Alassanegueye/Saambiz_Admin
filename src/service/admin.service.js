@@ -61,3 +61,4 @@ export const rejeterProfilVendeur = (id, motif)  => api.put(ENDPOINTS.ADMIN.REJE
 
 // ── Site web (vitrine) d'une boutique ──
 export const basculerSiteBoutique = (boutiqueId, active) => api.put(E.SITE_BOUTIQUE(boutiqueId), { active });
+export const supprimerSiteBoutique = (boutiqueId) => api.delete(E.SITE_BOUTIQUE(boutiqueId));

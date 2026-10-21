@@ -6,7 +6,7 @@ import Pagination from '../../components/common/Pagination';
 import FiltresStatut from '../../components/common/FiltresStatut';
 import FormulaireCompte from '../../components/forms/FormulaireCompte';
 import { FILTRES_STATUT } from '../../hooks/useComptes';
-import useVendeurs from './useVendeurs';
+import useVendeurs, { boutiqueDe } from './useVendeurs';
 import TableVendeurs from './components/TableVendeurs';
 import DetailVendeur from './components/DetailVendeur';
 
@@ -61,6 +61,9 @@ export default function VendeursPage() {
         title="Détails du vendeur"
         footer={(
           <>
+            {boutiqueDe(v.selection) && boutiqueDe(v.selection).vitrineConfiguree !== false && (
+              <button className="btn btn-danger" onClick={() => v.supprimerSite(v.selection)}>Supprimer le site</button>
+            )}
             <button className="btn btn-secondary" onClick={v.fermerDetail}>Fermer</button>
             <button
               className="btn btn-primary"

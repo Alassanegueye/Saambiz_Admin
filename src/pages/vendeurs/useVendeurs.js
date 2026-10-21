@@ -1,6 +1,6 @@
 import { toast, showConfirm } from '../../utils/alert';
 import {
-  getVendeurs, abonnementManuel, verifierVendeur, basculerSiteBoutique,
+  getVendeurs, abonnementManuel, verifierVendeur, basculerSiteBoutique, supprimerSiteBoutique,
   creerVendeur, modifierVendeur, suspendreVendeur, activerVendeur, supprimerVendeur,
 } from '../../service/admin.service';
 import useComptes, { nomComplet, estActif } from '../../hooks/useComptes';
@@ -81,5 +81,26 @@ export default function useVendeurs() {
     }
   };
 
-  return { ...c, activerAbonnement, verifier, basculerSite };
+  // Supprimer le site (présence en ligne) — les produits restent.
+  const supprimerSite = async (vendeur) => {
+    const b = boutiqueDe(vendeur);
+    if (!b) return;
+    const ok = await showConfirm({
+      titre: 'Supprimer le site',
+      message: `Supprimer le site de « ${b.nom} » ? Il ne sera plus accessible et ses réglages seront effacés. Les produits restent dans l'application.`,
+      confirmText: 'Supprimer le site',
+      danger: true,
+    });
+    if (!ok) return;
+    try {
+      await supprimerSiteBoutique(b.id);
+      toast.success(`Site de « ${b.nom} » supprimé`);
+      c.fermerDetail();
+      await c.recharger();
+    } catch (err) {
+      toast.error(err, 'Impossible de supprimer le site');
+    }
+  };
+
+  return { ...c, activerAbonnement, verifier, basculerSite, supprimerSite };
 }

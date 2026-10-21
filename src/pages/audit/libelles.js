@@ -45,6 +45,7 @@ const PARTICULIERS = {
   modifier_config: { texte: 'Réglage modifié', ton: 'info' },
   activer_site: { texte: 'Site activé', ton: 'success' },
   desactiver_site: { texte: 'Site désactivé', ton: 'warning' },
+  supprimer_site: { texte: 'Site supprimé', ton: 'danger' },
 };
 
 export const libelleAction = (action = '') => {

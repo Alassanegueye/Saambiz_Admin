@@ -51,6 +51,8 @@ export default function TableVendeurs({
                 <td>
                   {!boutiqueDe(v) ? (
                     <span className="td-muted td-petit">Pas de boutique</span>
+                  ) : boutiqueDe(v).vitrineConfiguree === false ? (
+                    <span className="td-muted td-petit">Pas encore personnalisé</span>
                   ) : boutiqueDe(v).vitrineActive ? (
                     <Badge variant="success">En ligne</Badge>
                   ) : (
@@ -63,7 +65,9 @@ export default function TableVendeurs({
                     <button className="btn btn-ghost btn-sm" onClick={() => onVoir(v)}>Voir</button>
                     <button className="btn btn-ghost btn-sm" onClick={() => onModifier(v)}>Modifier</button>
                     <button className="btn btn-ghost btn-sm" onClick={() => onAbonnement(v)}>Abonnement</button>
-                    {boutiqueDe(v) && (
+                    {/* Publiable seulement après une première personnalisation
+                        par le vendeur ; le désactiver reste toujours possible. */}
+                    {boutiqueDe(v) && (boutiqueDe(v).vitrineConfiguree !== false || boutiqueDe(v).vitrineActive) && (
                       <button className="btn btn-ghost btn-sm" onClick={() => onSite(v)}>
                         {boutiqueDe(v).vitrineActive ? 'Désactiver le site' : 'Activer le site'}
                       </button>
