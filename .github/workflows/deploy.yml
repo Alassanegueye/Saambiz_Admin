@@ -134,6 +134,53 @@ jobs:
             echo "Build déposé dans ${APP_DIR}/dist :"
             ls -la "${APP_DIR}/dist" | head -5
 
+            # ── Configuration Nginx ──────────────────────────────────────────
+            # Posée ici pour qu'une modification de deploy/nginx.conf prenne
+            # effet sans intervention manuelle. Sans cette étape, le fichier
+            # arrivait bien sur le serveur par le `git pull` ci-dessus, mais
+            # Nginx ne lit que /etc/nginx — un correctif pouvait donc rester
+            # invisible en production alors que le déploiement passait au vert.
+            #
+            # Le danger est réel : ce serveur sert plusieurs domaines, et une
+            # configuration invalide empêche de recharger TOUS les sites de la
+            # machine, certbot renew compris. D'où la sauvegarde, le test, et
+            # la restauration AVANT d'échouer — Nginx n'est jamais rechargé
+            # avec une configuration qui n'a pas passé `nginx -t`.
+            SITE="saambiz-admin"
+            DOMAINE="admin.saambiz.com"
+            DISPO="/etc/nginx/sites-available/${SITE}"
+            SAUVE="/root/${SITE}.nginx.avant-deploiement"
+
+            if [ ! -f "/etc/letsencrypt/live/${DOMAINE}/fullchain.pem" ]; then
+              # deploy/nginx.conf référence les certificats : les poser avant
+              # Certbot ferait échouer `nginx -t`. Le premier passage se fait
+              # donc à la main (nginx-http.conf puis certbot, voir le README).
+              echo "Certificat absent pour ${DOMAINE} — configuration Nginx laissée telle quelle."
+              echo "Premier déploiement : poser deploy/nginx-http.conf puis lancer certbot (voir README)."
+            else
+              [ -f "${DISPO}" ] && cp "${DISPO}" "${SAUVE}"
+
+              cp "${APP_DIR}/deploy/nginx.conf" "${DISPO}"
+              sed -i "s/YOUR_DOMAIN/${DOMAINE}/g" "${DISPO}"
+              ln -sf "${DISPO}" "/etc/nginx/sites-enabled/${SITE}"
+
+              if nginx -t; then
+                systemctl reload nginx
+                echo "Configuration Nginx à jour et rechargée."
+              else
+                echo "ERREUR : nginx -t a échoué avec la nouvelle configuration." >&2
+                if [ -f "${SAUVE}" ]; then
+                  cp "${SAUVE}" "${DISPO}"
+                  echo "Configuration précédente restaurée." >&2
+                else
+                  rm -f "/etc/nginx/sites-enabled/${SITE}"
+                  echo "Site désactivé (aucune version précédente à restaurer)." >&2
+                fi
+                nginx -t
+                exit 1
+              fi
+            fi
+
       - name: Vérifier le site en ligne
         # Le déploiement n'est acquis que si le site répond réellement. Sans
         # ce contrôle, un build déposé dans le mauvais dossier ou un Nginx mal

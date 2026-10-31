@@ -109,6 +109,12 @@ nginx -t && systemctl reload nginx
 `nginx -t` avant chaque `reload`, sans exception : Nginx est partagé, et un
 seul fichier invalide empêche de recharger **tous** les sites de la machine.
 
+Ce second bloc ne sert qu'à la première installation. Ensuite, le déploiement
+repose `deploy/nginx.conf` à chaque poussée : il sauvegarde la version en
+place, teste la nouvelle, et **restaure la précédente avant d'échouer** si
+`nginx -t` ne passe pas. Une modification de la configuration suffit donc à
+elle seule — il n'y a plus rien à recopier à la main.
+
 ### Mise à jour manuelle
 
 ```bash
