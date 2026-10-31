@@ -1,0 +1,154 @@
+name: Build & Deploy Admin
+
+# L'administration est construite puis déployée sur le VPS Contabo qui héberge
+# déjà l'API (api.saambiz.com), à chaque poussée sur main.
+#
+# Remplace l'envoi FTPS vers l'hébergement mutualisé : plus rien ne transite
+# par FTP, et l'administration est servie par le même Nginx que l'API — un
+# seul serveur à surveiller, un seul mécanisme de certificats.
+#
+# Deux jobs, dans cet ordre : `build` doit réussir avant que `deploy` ne
+# démarre. Un lint rouge ou un build cassé n'atteint donc jamais le serveur.
+#
+# Secrets à configurer UNE FOIS dans ce dépôt
+# (Settings → Secrets and variables → Actions). Ils ne sont pas partagés
+# entre dépôts, même pour le même serveur :
+#
+#   VPS_HOST     adresse du serveur (IP ou nom de domaine)
+#   VPS_USER     utilisateur SSH
+#   VPS_SSH_KEY  clé privée SSH, dont la publique est dans
+#                ~/.ssh/authorized_keys de cet utilisateur sur le VPS
+
+on:
+  push:
+    branches: [main]
+  # Relancer un déploiement sans commit : utile quand rien n'a changé dans le
+  # code mais qu'on veut reconstruire le site.
+  workflow_dispatch:
+
+# Deux déploiements simultanés construiraient dans le même dossier sur le VPS
+# et laisseraient un mélange des deux versions en ligne.
+#
+# `cancel-in-progress: false` est délibéré : interrompre un build en cours
+# laisserait le site à moitié déployé — un index.html neuf réclamant des
+# fragments JS jamais écrits, donc une page blanche. Mieux vaut attendre.
+concurrency:
+  group: deploiement-administration
+  cancel-in-progress: false
+
+env:
+  URL_PUBLIQUE: https://admin.saambiz.com
+  # Route qui n'existe pas sur le disque : elle ne répond que grâce au
+  # `try_files` de deploy/nginx.conf.
+  ROUTE_PROFONDE: /login
+
+jobs:
+  # ── Vérification (lint + build) ───────────────────────────────────────────
+  build:
+    name: Lint & build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Construire
+        # Vite charge .env.production tout seul en mode production. Ce fichier
+        # est versionné (voir .gitignore) : sans lui, le build part avec les
+        # replis de développement — API sur localhost, liens morts — et rien
+        # ne le signale.
+        run: npm run build
+
+      - name: Vérifier ce qui a été produit
+        run: |
+          set -e
+          test -f dist/index.html || { echo "::error::dist/index.html absent"; exit 1; }
+          grep -rqF "api.saambiz.com" dist/assets/ || {
+            echo "::error::l'adresse de l'API n'apparaît pas dans le bundle — .env.production n'a pas été pris en compte"
+            exit 1
+          }
+          echo "Fichiers produits : $(find dist -type f | wc -l)"
+
+  # ── Déploiement (seulement si le job ci-dessus a réussi) ──────────────────
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Déployer par SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          command_timeout: "15m"
+          script: |
+            set -e
+
+            APP_DIR="/var/www/saambiz-admin"
+
+            # Le dépôt est cloné une première fois à la main sur le VPS. Ce
+            # workflow ne fait que le mettre à jour : cloner ici masquerait
+            # une erreur de chemin derrière un déploiement en apparence
+            # réussi, dans un dossier que Nginx ne sert à personne.
+            if [ ! -d "${APP_DIR}/.git" ]; then
+              echo "ERREUR : ${APP_DIR} n'est pas un dépôt git." >&2
+              echo "Premier déploiement : 'git clone <url> ${APP_DIR}' une fois, à la main." >&2
+              exit 1
+            fi
+
+            cd "${APP_DIR}"
+            git pull --rebase origin main
+
+            # Construction dans un conteneur jetable : ce VPS n'a pas Node
+            # installé sur l'hôte, tout y tourne en Docker. Effet identique à
+            # `npm ci && npm run build`, sans poser de chaîne de compilation
+            # sur un serveur qui sert huit sites.
+            docker run --rm \
+              -v "${APP_DIR}":/app \
+              -w /app \
+              node:22-slim \
+              sh -c "npm ci --no-audit --no-fund && npm run build"
+
+            # dist/ est la cible finale de Nginx (`root` dans
+            # deploy/nginx.conf) : le build écrit directement dedans, il n'y a
+            # rien à synchroniser et aucun service à redémarrer — Nginx sert
+            # des fichiers statiques.
+            test -f "${APP_DIR}/dist/index.html" || {
+              echo "ERREUR : dist/index.html absent après le build." >&2
+              exit 1
+            }
+
+            echo "Build déposé dans ${APP_DIR}/dist :"
+            ls -la "${APP_DIR}/dist" | head -5
+
+      - name: Vérifier le site en ligne
+        # Le déploiement n'est acquis que si le site répond réellement. Sans
+        # ce contrôle, un build déposé dans le mauvais dossier ou un Nginx mal
+        # configuré ressemblent trait pour trait à un succès.
+        run: |
+          set -e
+          code=$(curl -sS -m 30 -o /dev/null -w '%{http_code}' "$URL_PUBLIQUE/")
+          echo "Accueil        $URL_PUBLIQUE/ -> $code"
+          [ "$code" = "200" ] || { echo "::error::la page d'accueil répond $code"; exit 1; }
+
+          code=$(curl -sS -m 30 -o /dev/null -w '%{http_code}' "$URL_PUBLIQUE$ROUTE_PROFONDE")
+          echo "Route profonde $ROUTE_PROFONDE -> $code"
+          [ "$code" = "200" ] || {
+            echo "::error::la route profonde répond $code — le try_files de deploy/nginx.conf n'est pas actif"
+            exit 1
+          }
+
+          echo "Déploiement vérifié."
