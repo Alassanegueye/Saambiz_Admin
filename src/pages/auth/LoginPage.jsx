@@ -31,7 +31,7 @@ export default function LoginPage() {
       }
       toast.success('Connexion réussie !');
       navigate(ROUTES.DASHBOARD, { replace: true });
-    });
+    }, { gelApres: 5 });
 
   return (
     <>
