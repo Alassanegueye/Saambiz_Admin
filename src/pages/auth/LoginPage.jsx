@@ -3,7 +3,7 @@ import { toast } from '../../utils/alert';
 import useTitrePage from '../../hooks/useTitrePage';
 import { ROUTES, URL_ESPACE_VENDEUR } from '../../constants/routes';
 import useLoginForm from '../../hooks/useLoginForm';
-import PICTO from '../../assets/images/picto-saambiz.png';
+import LogoAnime from '../../components/marque/LogoAnime';
 
 /**
  * Connexion de l'administration.
@@ -38,7 +38,7 @@ export default function LoginPage() {
       <div className="login-page login-page-admin">
         <div className="login-admin-card">
           <div className="login-admin-head">
-            <img src={PICTO} alt="SaamBiz" />
+            <LogoAnime taille={52} mode="entree" titre="SaamBiz" />
             <div>
               <div className="login-form-title">Administration</div>
               <div className="login-form-sub">Accès réservé à l&apos;équipe SaamBiz</div>

@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import TopNav from './TopNav';
+import TransitionPage from './TransitionPage';
 import { usePermissions } from '../../hooks/usePermissions';
 import useInactivityLogout from '../../hooks/useInactivityLogout';
 import { useAuth } from '../../hooks/useAuth';
@@ -53,6 +54,9 @@ export default function AdminLayout() {
     items.push({ code: 'ACTIVITE', to: '/audit-logs', label: 'Activité des admins', icon: ICONES.ACTIVITE });
   }
 
+  // Nom affiché sous le logo pendant le changement de page.
+  const titres = { ...Object.fromEntries(items.map((i) => [i.to, i.label])), '/profil': 'Mon profil' };
+
   return (
     <div className="admin-layout">
       {/* Pas de libellé d'espace : les 14 rubriques ont besoin de la place.
@@ -71,12 +75,16 @@ export default function AdminLayout() {
                 donc l'instance d'une page à l'autre, et après une erreur sur
                 une rubrique, cliquer sur une autre affichait toujours
                 « Une erreur est survenue ». La clé force une instance neuve
-                à chaque changement de page. */}
-          <ErrorBoundary key={pathname}>
-            <Suspense fallback={<LoadingSpinner />}>
-              <Outlet />
-            </Suspense>
-          </ErrorBoundary>
+                à chaque changement de page.
+              - TransitionPage : le logo se dessine à chaque changement de
+                page, sur un voile qui laisse la barre visible. */}
+          <TransitionPage titres={titres}>
+            <ErrorBoundary key={pathname}>
+              <Suspense fallback={<LoadingSpinner fullPage />}>
+                <Outlet />
+              </Suspense>
+            </ErrorBoundary>
+          </TransitionPage>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import useTitrePage from '../../hooks/useTitrePage';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import MiniBarChart from '../../components/common/MiniBarChart';
+import MiniBarres from '../../components/common/MiniBarres';
 import { formatMontant } from '../../utils/formatters';
 import useTableauDeBord from './useTableauDeBord';
 import CarteStat from './components/CarteStat';
@@ -9,6 +10,12 @@ import {
   ICONE_BOUTIQUE, ICONE_BOUTIQUE_VIDE, ICONE_PERSONNE,
   ICONE_PANIER, ICONE_MONNAIE, ICONE_VALIDE,
 } from './components/icones';
+
+/** « Mardi 3 novembre » */
+function dateDuJour() {
+  const texte = new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+  return texte.charAt(0).toUpperCase() + texte.slice(1);
+}
 
 /** Vue d'ensemble de la plateforme. */
 export default function TableauDeBordPage() {
@@ -19,16 +26,31 @@ export default function TableauDeBordPage() {
 
   const graphiquesDisponibles =
     t.revenusMensuels.length > 0 || t.inscriptionsMensuelles.length > 0;
+  const revenus = t.revenusMensuels.map((r) => Number(r.revenu) || 0);
 
   return (
     <>
       <div>
-        <div className="page-header">
-          <div className="page-header-left">
+        {/* Bandeau d'accueil : la date, et le dernier mois de revenus avec
+            ses petites barres or — celles du logo, tracées avec les vraies
+            valeurs. Le chiffre arrive avec le second chargement. */}
+        <section className="bandeau-accueil">
+          <div className="bandeau-accueil__texte">
+            <p className="bandeau-accueil__date">{dateDuJour()}</p>
             <h1>Vue d&apos;ensemble</h1>
-            <p>Statistiques générales de la plateforme</p>
+            <p>Statistiques générales de la plateforme.</p>
           </div>
-        </div>
+          {!t.loadingAvance && revenus.length > 0 && (
+            <div className="bandeau-accueil__semaine">
+              <span className="bandeau-accueil__libelle">Revenus du dernier mois</span>
+              <strong className="bandeau-accueil__montant">{formatMontant(revenus[revenus.length - 1])}</strong>
+              <MiniBarres
+                valeurs={revenus}
+                libelle={`Revenus mois par mois : ${t.revenusMensuels.map((r) => `${r.mois} ${formatMontant(r.revenu)}`).join(', ')}`}
+              />
+            </div>
+          )}
+        </section>
 
         <div className="stats-grid">
           <CarteStat label="Vendeurs actifs" to="/vendeurs?statut=actifs" valeur={t.stats?.vendeursActifs}
